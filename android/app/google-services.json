@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "773251187056",
+    "project_id": "wanna-exercise-app",
+    "storage_bucket": "wanna-exercise-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773251187056:android:7c6a0a574fa874e8dbcfb5",
+        "android_client_info": {
+          "package_name": "com.example.wanna_exercise_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDafAN_PR88cBoCpOZyrqt28qwCQuqAC1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
