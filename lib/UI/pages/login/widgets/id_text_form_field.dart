@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
-class IdTextFormField extends StatefulWidget {
-  const IdTextFormField({super.key, required this.idController});
+class IdTextFormField extends StatelessWidget {
+  const IdTextFormField({
+    super.key,
+    required this.idController,
+    required this.nextFocus,
+  });
 
   final TextEditingController idController;
+  final FocusNode nextFocus;
 
-  @override
-  State<IdTextFormField> createState() => _IdTextFormFieldState();
-}
-
-class _IdTextFormFieldState extends State<IdTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.idController,
+      controller: idController,
       textInputAction: TextInputAction.done,
+      onFieldSubmitted: (value) {
+        FocusScope.of(context).requestFocus(nextFocus);
+      },
       decoration: InputDecoration(
         hintText: 'ID',
         border: WidgetStateInputBorder.resolveWith((states) {

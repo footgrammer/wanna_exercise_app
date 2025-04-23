@@ -12,6 +12,7 @@ class _LoginPageState extends State<LoginPage> {
   final pwController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  final pwFocusNode = FocusNode(); // id onFieldSubmit 시 pw로 포커스 옮겨줄 때 사용
 
   @override
   void dispose() {
@@ -79,17 +80,24 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 20),
                           Row(children: [Text('ID'), Spacer()]),
                           SizedBox(height: 4),
-                          IdTextFormField(idController: idController),
+                          IdTextFormField(
+                            idController: idController,
+                            nextFocus: pwFocusNode,
+                          ),
                           SizedBox(height: 16),
                           Row(children: [Text('Password'), Spacer()]),
                           SizedBox(height: 4),
-                          PwTextFormField(pwController: pwController),
+                          PwTextFormField(
+                            pwController: pwController,
+                            focus: pwFocusNode,
+                          ),
                           SizedBox(height: 32),
                           ElevatedButton(
                             onPressed: () {
                               // TODO: 로그인 로직
                               // 로그인 성공 -> 카테고리 페이지 or 홈페이지
                               // 로그인 실패 -> SnackBar
+                              print('로그인 시도');
                             },
                             child: Text('Log in'),
                           ),
