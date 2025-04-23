@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wanna_exercise_app/UI/pages/home/home_page.dart';
+import 'package:wanna_exercise_app/UI/pages/login/login_view_model.dart';
 import 'package:wanna_exercise_app/UI/pages/login/widgets/id_text_form_field.dart';
 import 'package:wanna_exercise_app/UI/pages/login/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
@@ -97,14 +100,37 @@ class _LoginPageState extends State<LoginPage> {
                             validator: validatorLogin,
                           ),
                           SizedBox(height: 32),
-                          ElevatedButton(
-                            onPressed: () {
-                              // TODO: 로그인 로직
-                              // 로그인 성공 -> 카테고리 페이지 or 홈페이지
-                              // 로그인 실패 -> SnackBar
-                              print('로그인 시도');
+                          Consumer(
+                            builder: (
+                              BuildContext context,
+                              WidgetRef ref,
+                              Widget? child,
+                            ) {
+                              return ElevatedButton(
+                                onPressed: () async {
+                                  final viewModel = ref.read(loginViewModel);
+                                  final loginResult = await viewModel.login(
+                                    id: idController.text,
+                                    password: pwController.text,
+                                    formKey: formKey,
+                                  );
+                                  if (loginResult) {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return HomePage();
+                                        },
+                                      ),
+                                      (route) {
+                                        return false;
+                                      },
+                                    );
+                                  }
+                                },
+                                child: Text('Log in'),
+                              );
                             },
-                            child: Text('Log in'),
                           ),
                         ],
                       ),
