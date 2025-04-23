@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    pwFocusNode.dispose();
     idController.dispose();
     pwController.dispose();
     super.dispose();
