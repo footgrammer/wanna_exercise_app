@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wanna_exercise_app/UI/pages/login/widgets/id_text_form_field.dart';
 import 'package:wanna_exercise_app/UI/pages/login/widgets/pw_text_form_field.dart';
+import 'package:wanna_exercise_app/core/validator_login.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final formKey = GlobalKey<FormState>();
   final pwFocusNode = FocusNode(); // id onFieldSubmit 시 pw로 포커스 옮겨줄 때 사용
+  final validatorLogin = ValidatorLogin();
 
   @override
   void dispose() {
@@ -84,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                           IdTextFormField(
                             idController: idController,
                             nextFocus: pwFocusNode,
+                            validator: validatorLogin,
                           ),
                           SizedBox(height: 16),
                           Row(children: [Text('Password'), Spacer()]),
@@ -91,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                           PwTextFormField(
                             pwController: pwController,
                             focus: pwFocusNode,
+                            validator: validatorLogin,
                           ),
                           SizedBox(height: 32),
                           ElevatedButton(
