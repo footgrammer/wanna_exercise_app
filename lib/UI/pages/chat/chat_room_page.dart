@@ -5,16 +5,26 @@ import 'package:wanna_exercise_app/UI/pages/chat/widgets/chat_room_list_view.dar
 class ChatRoomPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('채팅방'),
-        centerTitle: true,
-      ),
-      bottomSheet: ChatRoomBottomsheet(),
-      body: Column(
-        children: [
-          ChatRoomListView()
-        ],
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('채팅방'),
+          centerTitle: true,
+        ),
+        bottomSheet: ChatRoomBottomsheet(
+          MediaQuery.of(context).padding.bottom
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Column(
+            children: [
+              ChatRoomListView()
+            ],
+          ),
+        ),
       ),
     );
   }
