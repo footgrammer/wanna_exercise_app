@@ -16,10 +16,6 @@ void main() async {
     },
   );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  final chatRepository = ChatRepository();
-  await chatRepository.getaAll();
-  
   runApp(const ProviderScope(child: MyApp()));
 }
 
