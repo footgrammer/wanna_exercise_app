@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wanna_exercise_app/core/on_submitted_func.dart';
 import 'package:wanna_exercise_app/pages/login/login_view_model.dart';
-import 'package:wanna_exercise_app/pages/login/widgets/id_text_form_field.dart';
-import 'package:wanna_exercise_app/pages/login/widgets/pw_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/register/register_page.dart';
+import 'package:wanna_exercise_app/pages/widgets/id_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final phoneController = TextEditingController();
   final pwController = TextEditingController();
 
@@ -60,35 +62,58 @@ class _LoginPageState extends State<LoginPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Don't have an account?",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.grey[700],
+                          SizedBox(
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Don't have an account?",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey[700],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.blueAccent,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(width: 8),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return RegisterPage();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      "Sign Up",
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.blueAccent,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          SizedBox(height: 20),
                           Row(children: [Text('ID'), Spacer()]),
                           SizedBox(height: 4),
                           PhoneTextFormField(
                             phoneController: phoneController,
                             nextFocus: pwFocusNode,
                             validator: validatorLogin,
+                            onSubmittedFunction:
+                                () => onSubmittedFunc.moveFocusToNext(
+                                  context,
+                                  pwFocusNode,
+                                ),
                           ),
                           SizedBox(height: 16),
                           Row(children: [Text('Password'), Spacer()]),
@@ -96,38 +121,14 @@ class _LoginPageState extends State<LoginPage> {
                           PwTextFormField(
                             pwController: pwController,
                             focus: pwFocusNode,
+                            nextFocus: null,
                             validator: validatorLogin,
+                            onSubmittedFunction: handleLogin,
                           ),
                           SizedBox(height: 32),
-                          Consumer(
-                            builder: (
-                              BuildContext context,
-                              WidgetRef ref,
-                              Widget? child,
-                            ) {
-                              return ElevatedButton(
-                                onPressed: () async {
-                                  final credential = await ref
-                                      .read(loginViewModelProvider)
-                                      .login(
-                                        phone: phoneController.text,
-                                        password: pwController.text,
-                                      );
-
-                                  if (credential != null &&
-                                      credential.user != null) {
-                                    // TODO: 페이지 이동
-                                    print(
-                                      "로그인 성공! 유저 UID: ${credential.user!.uid}",
-                                    );
-                                  } else {
-                                    // TODO: 스낵바 출력
-                                    print("로그인 실패");
-                                  }
-                                },
-                                child: Text('Log in'),
-                              );
-                            },
+                          ElevatedButton(
+                            onPressed: handleLogin,
+                            child: Text('Log in'),
                           ),
                         ],
                       ),
@@ -140,5 +141,22 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> handleLogin() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+    final credential = await ref
+        .read(loginViewModelProvider)
+        .login(phone: phoneController.text, password: pwController.text);
+
+    if (credential != null && credential.user != null) {
+      // TODO: 페이지 이동
+      print("로그인 성공! 유저 UID: ${credential.user!.uid}");
+    } else {
+      // TODO: 스낵바 출력
+      print("로그인 실패");
+    }
   }
 }

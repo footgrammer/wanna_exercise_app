@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/data/models/user.dart';
 import 'package:wanna_exercise_app/data/repositories/auth_repository.dart';
 
+// TODO: login_view_model 대신 auth_view_model 사용
+// 본 파일 내용 모두 옮기기, 파일 삭제
+
 class LoginViewModel {
   final AuthRepository authRepo;
 
@@ -14,7 +17,6 @@ class LoginViewModel {
     required String password,
   }) async {
     final user = User(phone: phone, password: password);
-
     try {
       return await authRepo.login(user);
     } catch (e) {
