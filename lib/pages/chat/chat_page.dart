@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wanna_exercise_app/UI/pages/chat/chat_room_page.dart';
+import 'package:wanna_exercise_app/pages/chat/chat_room_page.dart';
 
 class ChatPage extends StatelessWidget {
   @override

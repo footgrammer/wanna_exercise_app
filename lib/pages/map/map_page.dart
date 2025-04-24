@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wanna_exercise_app/UI/pages/map/widgets/event_card_widget.dart';
-import 'package:wanna_exercise_app/UI/pages/map/widgets/search_bar_widget.dart';
+import 'package:wanna_exercise_app/pages/map/widgets/event_card_widget.dart';
+import 'package:wanna_exercise_app/pages/map/widgets/search_bar_widget.dart';
 
 class MapPage extends StatelessWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wanna_exercise_app/UI/pages/login/widgets/id_text_form_field.dart';
-import 'package:wanna_exercise_app/UI/pages/login/widgets/pw_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/login/widgets/id_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/login/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
 
 class LoginPage extends StatefulWidget {
