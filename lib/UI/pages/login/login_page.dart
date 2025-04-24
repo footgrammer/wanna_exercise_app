@@ -108,25 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                             ) {
                               return ElevatedButton(
                                 onPressed: () async {
-                                  final viewModel = ref.read(loginViewModel);
-                                  final loginResult = await viewModel.login(
-                                    id: idController.text,
-                                    password: pwController.text,
-                                    formKey: formKey,
-                                  );
-                                  if (loginResult) {
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return HomePage();
-                                        },
-                                      ),
-                                      (route) {
-                                        return false;
-                                      },
-                                    );
-                                  }
+                                  // TODO: 로그인
                                 },
                                 child: Text('Log in'),
                               );
