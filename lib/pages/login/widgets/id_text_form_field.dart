@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
 
-class IdTextFormField extends StatelessWidget {
-  const IdTextFormField({
+class PhoneTextFormField extends StatelessWidget {
+  const PhoneTextFormField({
     super.key,
-    required this.idController,
+    required this.phoneController,
     required this.nextFocus,
     required this.validator,
   });
 
-  final TextEditingController idController;
+  final TextEditingController phoneController;
   final FocusNode nextFocus;
   final ValidatorLogin validator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: idController,
+      controller: phoneController,
       textInputAction: TextInputAction.done,
       validator: validator.validatorId,
       onFieldSubmitted: (value) {

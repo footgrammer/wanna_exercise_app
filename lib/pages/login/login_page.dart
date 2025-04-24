@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wanna_exercise_app/pages/login/login_view_model.dart';
 import 'package:wanna_exercise_app/pages/login/widgets/id_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/login/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
@@ -10,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final idController = TextEditingController();
+  final phoneController = TextEditingController();
   final pwController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
@@ -20,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     pwFocusNode.dispose();
-    idController.dispose();
+    phoneController.dispose();
     pwController.dispose();
     super.dispose();
   }
@@ -84,8 +85,8 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 20),
                           Row(children: [Text('ID'), Spacer()]),
                           SizedBox(height: 4),
-                          IdTextFormField(
-                            idController: idController,
+                          PhoneTextFormField(
+                            phoneController: phoneController,
                             nextFocus: pwFocusNode,
                             validator: validatorLogin,
                           ),
@@ -106,7 +107,12 @@ class _LoginPageState extends State<LoginPage> {
                             ) {
                               return ElevatedButton(
                                 onPressed: () async {
-                                  // TODO: 로그인
+                                  ref
+                                      .read(loginViewModelProvider)
+                                      .login(
+                                        phoneNumber: phoneController.text,
+                                        password: pwController.text,
+                                      );
                                 },
                                 child: Text('Log in'),
                               );
