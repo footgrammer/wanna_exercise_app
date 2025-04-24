@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PostPage extends StatelessWidget{
+class PostPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text('PostPage');
