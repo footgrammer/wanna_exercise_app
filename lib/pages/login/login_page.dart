@@ -107,12 +107,23 @@ class _LoginPageState extends State<LoginPage> {
                             ) {
                               return ElevatedButton(
                                 onPressed: () async {
-                                  ref
+                                  final credential = await ref
                                       .read(loginViewModelProvider)
                                       .login(
-                                        phoneNumber: phoneController.text,
+                                        phone: phoneController.text,
                                         password: pwController.text,
                                       );
+
+                                  if (credential != null &&
+                                      credential.user != null) {
+                                    // TODO: 페이지 이동
+                                    print(
+                                      "로그인 성공! 유저 UID: ${credential.user!.uid}",
+                                    );
+                                  } else {
+                                    // TODO: 스낵바 출력
+                                    print("로그인 실패");
+                                  }
                                 },
                                 child: Text('Log in'),
                               );
