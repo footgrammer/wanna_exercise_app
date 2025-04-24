@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:wanna_exercise_app/model/model/profile.dart';
+import 'package:wanna_exercise_app/data/models/profile.dart';
 
 class ProfileRepository {
   const ProfileRepository();
