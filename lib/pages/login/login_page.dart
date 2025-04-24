@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wanna_exercise_app/pages/login/login_view_model.dart';
 import 'package:wanna_exercise_app/pages/login/widgets/id_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/login/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
@@ -9,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final idController = TextEditingController();
+  final phoneController = TextEditingController();
   final pwController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
@@ -19,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     pwFocusNode.dispose();
-    idController.dispose();
+    phoneController.dispose();
     pwController.dispose();
     super.dispose();
   }
@@ -83,8 +85,8 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 20),
                           Row(children: [Text('ID'), Spacer()]),
                           SizedBox(height: 4),
-                          IdTextFormField(
-                            idController: idController,
+                          PhoneTextFormField(
+                            phoneController: phoneController,
                             nextFocus: pwFocusNode,
                             validator: validatorLogin,
                           ),
@@ -97,14 +99,35 @@ class _LoginPageState extends State<LoginPage> {
                             validator: validatorLogin,
                           ),
                           SizedBox(height: 32),
-                          ElevatedButton(
-                            onPressed: () {
-                              // TODO: 로그인 로직
-                              // 로그인 성공 -> 카테고리 페이지 or 홈페이지
-                              // 로그인 실패 -> SnackBar
-                              print('로그인 시도');
+                          Consumer(
+                            builder: (
+                              BuildContext context,
+                              WidgetRef ref,
+                              Widget? child,
+                            ) {
+                              return ElevatedButton(
+                                onPressed: () async {
+                                  final credential = await ref
+                                      .read(loginViewModelProvider)
+                                      .login(
+                                        phone: phoneController.text,
+                                        password: pwController.text,
+                                      );
+
+                                  if (credential != null &&
+                                      credential.user != null) {
+                                    // TODO: 페이지 이동
+                                    print(
+                                      "로그인 성공! 유저 UID: ${credential.user!.uid}",
+                                    );
+                                  } else {
+                                    // TODO: 스낵바 출력
+                                    print("로그인 실패");
+                                  }
+                                },
+                                child: Text('Log in'),
+                              );
                             },
-                            child: Text('Log in'),
                           ),
                         ],
                       ),
