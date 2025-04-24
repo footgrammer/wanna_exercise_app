@@ -1,15 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wanna_exercise_app/data/models/chat.dart';
 
 class ChatRepository {
-  Future<void> getaAll() async {
-    final firestore = FirebaseFirestore.instance;
-    final collectionRef = firestore.collection('chats');
-    final result = await collectionRef.get();
-    final docs = result.docs;
-
-    for (var doc in docs) {
-      print(doc.id);
-      print(doc.data());
-    }
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Stream<List<ChatRoomModel>> getMessages(String roomId) {
+    return _firestore
+        .collection('chatRooms')
+        .doc(roomId)
+        .collection('messages')
+        .orderBy('datetime', descending: false)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs
+                  .map((doc) => ChatRoomModel.fromMap(doc.data()))
+                  .toList(),
+        );
   }
 }
