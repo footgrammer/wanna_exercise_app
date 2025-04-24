@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/firebase_options.dart';
-import 'package:wanna_exercise_app/theme/light_theme.dart';
-import 'package:wanna_exercise_app/UI/pages/home/home_page.dart';
+import 'package:wanna_exercise_app/themes/light_theme.dart';
+import 'package:wanna_exercise_app/pages/home/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

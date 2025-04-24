@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:wanna_exercise_app/UI/widgets/user_profile_image.dart';
+import 'package:wanna_exercise_app/pages/widgets/user_profile_image.dart';
 
-class ChatRoomReceive extends StatelessWidget{
+class ChatRoomReceive extends StatelessWidget {
   ChatRoomReceive({
     required this.imgUrl,
     required this.showProfile,
     required this.content,
-    required this.dateTime
+    required this.dateTime,
   });
 
   final String imgUrl;
@@ -14,19 +14,17 @@ class ChatRoomReceive extends StatelessWidget{
   final String content;
   final DateTime dateTime;
 
-
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        showProfile ?
-        UserProfileImage(demension: 50,
-         imgUrl: imgUrl,)
-         : SizedBox(width: 50,),
+        showProfile
+            ? UserProfileImage(demension: 50, imgUrl: imgUrl)
+            : SizedBox(width: 50),
 
-         SizedBox(width: 8,),
+        SizedBox(width: 8),
 
-         Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,16 +32,15 @@ class ChatRoomReceive extends StatelessWidget{
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 224, 224, 224),
                   borderRadius: BorderRadius.circular(16),
-                  
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text(content,
-                style: TextStyle(fontSize:13),),
+                child: Text(content, style: TextStyle(fontSize: 13)),
               ),
-              
-              Text(dateTime.toIso8601String())
+
+              Text(dateTime.toIso8601String()),
             ],
-          ))
+          ),
+        ),
       ],
     );
   }

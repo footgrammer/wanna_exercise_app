@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wanna_exercise_app/UI/pages/home/home_page.dart';
-import 'package:wanna_exercise_app/UI/pages/login/login_view_model.dart';
-import 'package:wanna_exercise_app/UI/pages/login/widgets/id_text_form_field.dart';
-import 'package:wanna_exercise_app/UI/pages/login/widgets/pw_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/login/widgets/id_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/login/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
 
 class LoginPage extends StatefulWidget {
