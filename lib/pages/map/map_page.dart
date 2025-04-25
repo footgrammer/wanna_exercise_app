@@ -1,9 +1,85 @@
+// import 'package:flutter/material.dart';
+// import 'package:flutter_naver_map/flutter_naver_map.dart';
+// import 'package:wanna_exercise_app/data/view_models/map_view_model.dart';
+// import 'widgets/event_card_widget.dart';
+// import 'widgets/search_bar_widget.dart';
+
+// class MapPage extends StatefulWidget {
+//   const MapPage({super.key});
+
+//   @override
+//   State<MapPage> createState() => _MapPageState();
+// }
+
+// class _MapPageState extends State<MapPage> {
+//   final MapViewModel viewModel = MapViewModel();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Stack(
+//         children: [
+//           Positioned.fill(
+//             child: NaverMap(
+//               onMapReady: (controller) {
+//                 viewModel.mapController = controller;
+
+//                 viewModel.loadDummyMarkers((marker, post) {
+//                   marker.setOnTapListener((_) {
+//                     showModalBottomSheet(
+//                       context: context,
+//                       builder: (_) => EventCardWidget(
+//                         title: post.title,
+//                         time: post.startTime,
+//                       ),
+//                     );
+//                   });
+//                   controller.addOverlay(marker);
+//                 });
+//               },
+//               options: const NaverMapViewOptions(
+//                 locationButtonEnable: true,
+//                 zoomGesturesEnable: true,
+//               ),
+//             ),
+//           ),
+//           Positioned(
+//             top: 50,
+//             left: 16,
+//             right: 16,
+//             child: SearchBarWidget(
+//               onSearch: (keyword) {
+//                 viewModel.moveToLocationAndFilterMarkers(
+//                   keyword: keyword,
+//                   onMarkerReady: (marker, post) {
+//                     marker.setOnTapListener((_) {
+//                       showModalBottomSheet(
+//                         context: context,
+//                         builder: (_) => EventCardWidget(
+//                           title: post.title,
+//                           time: post.startTime,
+//                         ),
+//                       );
+//                     });
+//                     viewModel.mapController.addOverlay(marker);
+//                   },
+//                 );
+//               },
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:http/http.dart' as http;
 import 'package:wanna_exercise_app/pages/map/widgets/event_card_widget.dart';
 import 'package:wanna_exercise_app/pages/map/widgets/search_bar_widget.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart'; // TODO: Firebase 준비되면 주석 해제
 
 class MapPage extends StatefulWidget {
   @override
@@ -13,21 +89,35 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   late NaverMapController _mapController;
 
+  // 🔹 더미 데이터
+  final List<Map<String, String>> dummyPosts = [
+    {
+      'location': '서울 강남역',
+      'title': '강남역 러닝 모임',
+      'startTime': '오늘 오후 6시',
+    },
+    {
+      'location': '해운대 해수욕장',
+      'title': '부산 조깅 팀',
+      'startTime': '내일 오전 7시',
+    },
+    {
+      'location': '전주 한옥마을',
+      'title': '전주 산책 모임',
+      'startTime': '이번 주말 오후 3시',
+    },
+  ];
+
   Future<NLatLng?> getCoordsFromKakao(String keyword) async {
     final encoded = Uri.encodeComponent(keyword);
-    final url = Uri.parse(
-      'https://dapi.kakao.com/v2/local/search/keyword.json?query=$encoded',
-    );
+    final url = Uri.parse('https://dapi.kakao.com/v2/local/search/keyword.json?query=$encoded');
 
     final response = await http.get(
       url,
       headers: {
-        'Authorization': 'KakaoAK 791070265eff4f73e8343ac2f4dc34dc', 
+        'Authorization': 'KakaoAK 791070265eff4f73e8343ac2f4dc34dc',
       },
     );
-
-    print('Kakao API 응답 코드: ${response.statusCode}');
-    print('응답 내용: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -42,38 +132,61 @@ class _MapPageState extends State<MapPage> {
     return null;
   }
 
-  /// 더미 주소로 마커 찍기
-  Future<void> loadAndMarkAddresses() async {
-    final List<String> dummyAddresses = [
-      '서울디지털산업단지 인조잔디축구장',
-      '서울특별시 중구 세종대로 110',
-      '부산 해운대 해수욕장',
-      '대구 반월당역',
-      '광주 유스퀘어 터미널',
-    ];
-
-    for (final address in dummyAddresses) {
-      print('장소 검색 시도: $address');
+  Future<void> loadAndMarkFromDummy() async {
+    for (final post in dummyPosts) {
+      final address = post['location']!;
       final coords = await getCoordsFromKakao(address);
+
       if (coords != null) {
-        print('좌표 변환 성공: $coords');
         final marker = NMarker(id: address, position: coords);
 
         marker.setOnTapListener((_) {
           showModalBottomSheet(
             context: context,
-            builder: (_) => Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text('장소: $address'),
+            builder: (_) => EventCardWidget(
+              title: post['title'] ?? '제목 없음',
+              time: post['startTime'] ?? '시간 미정',
             ),
           );
         });
 
         _mapController.addOverlay(marker);
-      } else {
-        print('좌표 변환 실패: $address');
       }
     }
+  }
+
+  Future<void> searchAndShowRegion(String keyword) async {
+    final center = await getCoordsFromKakao(keyword);
+    if (center == null) return;
+
+    _mapController.updateCamera(NCameraUpdate.scrollAndZoomTo(target: center, zoom: 13));
+    _mapController.clearOverlays();
+
+    // TODO: 파이어베이스 연동 전까지는 더미에서 필터
+    for (final post in dummyPosts) {
+      final address = post['location']!;
+      final coords = await getCoordsFromKakao(address);
+
+      if (coords != null && isNearby(center, coords)) {
+        final marker = NMarker(id: address, position: coords);
+
+        marker.setOnTapListener((_) {
+          showModalBottomSheet(
+            context: context,
+            builder: (_) => EventCardWidget(
+              title: post['title'] ?? '제목 없음',
+              time: post['startTime'] ?? '시간 미정',
+            ),
+          );
+        });
+
+        _mapController.addOverlay(marker);
+      }
+    }
+  }
+
+  bool isNearby(NLatLng a, NLatLng b, {double maxMeters = 3000}) {
+    return a.distanceTo(b) <= maxMeters;
   }
 
   @override
@@ -85,7 +198,7 @@ class _MapPageState extends State<MapPage> {
             child: NaverMap(
               onMapReady: (controller) {
                 _mapController = controller;
-                loadAndMarkAddresses(); 
+                loadAndMarkFromDummy(); // ✅ 더미 데이터 마커 표시
               },
               options: const NaverMapViewOptions(
                 locationButtonEnable: true,
@@ -93,17 +206,11 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 50,
             left: 16,
             right: 16,
-            child: SearchBarWidget(),
-          ),
-          const Positioned(
-            bottom: 16,
-            left: 0,
-            right: 0,
-            child: EventCardWidget(),
+            child: SearchBarWidget(onSearch: searchAndShowRegion),
           ),
         ],
       ),
