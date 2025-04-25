@@ -12,3 +12,4 @@ final userViewModelProvider = ChangeNotifierProvider<UserViewModel>((ref) {
   final repository = ref.watch(profileRepositoryProvider);
   return UserViewModel(repository);
 });
+ 

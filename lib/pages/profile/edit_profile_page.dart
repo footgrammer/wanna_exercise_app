@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/data/providers/user_provider.dart';
-// import 'package:firebase_auth/firebase_auth.dart'; // 🔒 나중에 사용
+import 'package:firebase_auth/firebase_auth.dart'; 
 
 class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({super.key});
@@ -18,16 +18,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   void initState() {
     super.initState();
 
-    // 🔧 현재는 임시 테스트용 UID로 설정
-    uid = 'k0pb7JaMYSMXsRm3BN3E';
-
-    // 🔒 정식 FirebaseAuth 연동 시 아래 주석 해제
-    /*
+  
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       uid = user.uid;
     }
-    */
 
     Future.microtask(() {
       ref.read(userViewModelProvider.notifier).loadProfile(uid);
@@ -50,12 +45,12 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
         backgroundColor: const Color(0xFFE5E5E5),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF252524)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF007AFF)),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           '프로필 수정',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF252524)),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF007AFF)),
         ),
         centerTitle: false,
       ),
@@ -73,11 +68,13 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       CircleAvatar(
                         radius: 100,
                         backgroundColor: const Color.fromARGB(255, 169, 211, 255),
+
                         backgroundImage: viewModel.selectedImage != null
                             ? FileImage(viewModel.selectedImage!)
                             : (viewModel.profile?.profileImage.isNotEmpty ?? false)
                                 ? NetworkImage(viewModel.profile!.profileImage)
                                 : null,
+
                         child: (viewModel.selectedImage == null &&
                                 (viewModel.profile?.profileImage.isEmpty ?? true))
                             ? const Icon(Icons.person, size: 100, color: Color(0xFF007AFF))
@@ -176,8 +173,15 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () async {
-                        await ref.read(userViewModelProvider.notifier).updateProfile(uid);
-                        Navigator.of(context).pop();
+                              final notifier = ref.read(userViewModelProvider.notifier);
+
+                              await notifier.updateProfile(uid);
+                              await notifier.loadProfile(uid);
+
+     
+                        if (mounted) {
+        Navigator.of(context).pop();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black,

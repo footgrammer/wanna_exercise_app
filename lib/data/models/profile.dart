@@ -1,36 +1,36 @@
 // imgUr -> profileImage로 변경
 class Profile {
-  final String email;
+  final String phone;
   final String nickname;
   final String profileImage;
 
   Profile({
-    required this.email,
+    required this.phone,
     required this.nickname,
     required this.profileImage,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
     return Profile(
-      email: json['email'] ?? '',
+      phone: json['phone'] ?? '',
       nickname: json['nickname'] ?? '',
       profileImage: json['profileImage'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'email': email,
+        'phone': phone,
         'nickname': nickname,
         'profileImage': profileImage,
       };
 
         Profile copyWith({
-    String? email,
+    String? phone,
     String? nickname,
     String? profileImage,
   }) {
     return Profile(
-      email: email ?? this.email,
+      phone: phone ?? this.phone,
       nickname: nickname ?? this.nickname,
       profileImage: profileImage ?? this.profileImage,
     );

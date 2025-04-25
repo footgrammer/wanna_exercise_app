@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/data/providers/user_provider.dart';
 import 'package:wanna_exercise_app/pages/profile/edit_profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart'; 
+
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -17,8 +19,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   void initState() {
     super.initState();
 
-    // 임시 uid 사용
-    uid = 'k0pb7JaMYSMXsRm3BN3E'; // Firestore에 존재하는 문서 ID
+   final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      uid = user.uid;
+    }
 
     // ViewModel 통해 프로필 불러오기
     Future.microtask(() {
@@ -39,14 +43,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         backgroundColor: const Color(0xFFE5E5E5),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF252524)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF007AFF)),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           '프로필',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xFF252524),
+            color: Color(0xFF007AFF),
           ),
         ),
         centerTitle: false,
@@ -58,27 +62,27 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    radius: 60,
-                    backgroundColor: mainColor.withOpacity(0.2),
-                    backgroundImage: profile.profileImage.isNotEmpty
-                        ? NetworkImage(profile.profileImage)
-                        : null,
-                    child: profile.profileImage.isEmpty
-                        ? Icon(Icons.person, size: 60, color: mainColor)
-                        : null,
-                  ),
+                  radius: 100,
+                  backgroundColor: const Color.fromARGB(255, 169, 211, 255),
+                  backgroundImage: profile.profileImage.isNotEmpty
+                      ? NetworkImage(profile.profileImage)
+                      : null,
+                  child: profile.profileImage.isEmpty
+                      ? const Icon(Icons.person, size: 100, color: Color(0xFF007AFF))
+                      : null,
+                ), // 로그인한 사용자 프로필 이미지와 닉네임을 설정하지 않았을 때, 프로필 이미지 = 기본 아바타
                   const SizedBox(height: 16),
                   Text(
-                    profile.nickname,
+                    profile.nickname.isNotEmpty ? profile.nickname : '김운동',
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF252524),
-                    ),
+                    ),// 로그인한 사용자가 닉네임을 설정하지 않았을 때, 닉네임 = 김운동
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    profile.email,
+                    profile.phone,
                     style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                   ),
                 ],
