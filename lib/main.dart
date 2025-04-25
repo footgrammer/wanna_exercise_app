@@ -2,7 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wanna_exercise_app/data/repositories/chat_repository.dart';
 import 'package:wanna_exercise_app/firebase_options.dart';
+import 'package:wanna_exercise_app/pages/profile/edit_profile_page.dart';
+import 'package:wanna_exercise_app/pages/profile/profile_page.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 import 'package:wanna_exercise_app/pages/home/home_page.dart';
 
@@ -26,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Wanna Exercise App',
       theme: appTheme,
-      home: HomePage(),
+      home: ProfilePage(),
     );
   }
 }
