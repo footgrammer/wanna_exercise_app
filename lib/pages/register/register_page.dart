@@ -42,14 +42,18 @@ class _RegisterPageState extends State<RegisterPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: Colors.blue,
         body: Form(
           key: formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ListView(
               children: [
-                SizedBox(height: 80),
+                SizedBox(height: 20),
+                SizedBox(
+                  height: 120,
+                  child: Image.asset('assets/images/wanna_exercise.png'),
+                ),
+                SizedBox(height: 30),
                 Container(
                   padding: EdgeInsets.all(30),
                   decoration: BoxDecoration(
@@ -74,6 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           Row(children: [Text('전화번호'), Spacer()]),
                           SizedBox(height: 4),
                           PhoneTextFormField(
+                            // TODO: 회원가입용 validator 생성 및 적용
                             phoneController: phoneController,
                             nextFocus: pwFocusNode,
                             validator: ValidatorLogin(),

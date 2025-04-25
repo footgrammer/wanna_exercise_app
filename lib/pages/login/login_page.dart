@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/core/on_submitted_func.dart';
-import 'package:wanna_exercise_app/pages/login/login_view_model.dart';
+import 'package:wanna_exercise_app/data/view_models/auth_view_model.dart';
 import 'package:wanna_exercise_app/pages/register/register_page.dart';
 import 'package:wanna_exercise_app/pages/widgets/id_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
@@ -35,14 +35,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: Colors.blue,
         body: Form(
           key: formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ListView(
               children: [
-                SizedBox(height: 80),
+                SizedBox(height: 20),
+                SizedBox(
+                  height: 120,
+                  child: Image.asset('assets/images/wanna_exercise.png'),
+                ),
+                SizedBox(height: 30),
                 Container(
                   padding: EdgeInsets.all(30),
                   decoration: BoxDecoration(
@@ -148,7 +152,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       return;
     }
     final credential = await ref
-        .read(loginViewModelProvider)
+        .read(authViewModelProvider)
         .login(phone: phoneController.text, password: pwController.text);
 
     if (credential != null && credential.user != null) {
