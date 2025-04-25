@@ -31,7 +31,7 @@ class PwTextFormField extends StatelessWidget {
       onFieldSubmitted: (value) {
         onSubmittedFunction();
       },
-      decoration: InputDecoration(hintText: 'Password'),
+      decoration: InputDecoration(hintText: '비밀번호'),
     );
   }
 }

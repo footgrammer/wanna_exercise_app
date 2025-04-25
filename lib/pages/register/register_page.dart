@@ -5,6 +5,7 @@ import 'package:wanna_exercise_app/core/validator_util.dart';
 import 'package:wanna_exercise_app/data/view_models/auth_view_model.dart';
 import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
+import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   @override
@@ -21,6 +22,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   final pwFocusNode = FocusNode(); // pw로 포커스 옮겨줄 때
   final pwCkFocusNode = FocusNode(); // pw check로 포커스 옮겨줄 때
+
+  String? phoneValidationMessage;
+  bool? isPhoneAvailable;
 
   @override
   void dispose() {
@@ -104,16 +108,73 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           ),
                           Row(children: [Text('전화번호'), Spacer()]),
                           SizedBox(height: 4),
-                          PhoneTextFormField(
-                            // TODO: 회원가입용 validator 생성 및 적용
-                            phoneController: phoneController,
-                            nextFocus: pwFocusNode,
-                            validator: validatorUtil.registerValidatorPhone,
-                            onSubmittedFunction:
-                                () => OnSubmittedFunc.moveFocusToNext(
-                                  context,
-                                  pwFocusNode,
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: PhoneTextFormField(
+                                      phoneController: phoneController,
+                                      nextFocus: pwFocusNode,
+                                      validator:
+                                          validatorUtil.registerValidatorPhone,
+                                      onSubmittedFunction:
+                                          () => OnSubmittedFunc.moveFocusToNext(
+                                            context,
+                                            pwFocusNode,
+                                          ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final message = await ref
+                                          .read(authViewModelProvider)
+                                          .isAlreadyRegistered(
+                                            phoneController.text,
+                                          );
+                                      setState(() {
+                                        phoneValidationMessage = message;
+                                        isPhoneAvailable = message.contains(
+                                          '사용할 수 있는',
+                                        );
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 80,
+                                      height: 44,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: primaryColor,
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '중복 확인',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              if (phoneValidationMessage != null)
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    phoneValidationMessage!,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color:
+                                          isPhoneAvailable == true
+                                              ? primaryColor
+                                              : negativeColor,
+                                    ),
+                                  ),
                                 ),
+                            ],
                           ),
                           SizedBox(height: 16),
                           Row(children: [Text('비밀번호'), Spacer()]),
@@ -134,6 +195,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           SizedBox(height: 4),
                           TextFormField(
                             controller: pwCkController,
+                            decoration: InputDecoration(hintText: '비밀번호 확인'),
                             focusNode: pwCkFocusNode,
                             maxLength: 20,
                             obscureText: true,
@@ -150,7 +212,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           SizedBox(height: 32),
                           ElevatedButton(
                             onPressed: handleRegister,
-                            // TODO: register 연결
                             child: Text('회원가입'),
                           ),
                         ],

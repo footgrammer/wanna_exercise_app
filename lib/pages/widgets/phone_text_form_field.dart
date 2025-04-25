@@ -28,7 +28,7 @@ class PhoneTextFormField extends StatelessWidget {
       onFieldSubmitted: (value) {
         onSubmittedFunction();
       },
-      decoration: InputDecoration(hintText: 'ID'),
+      decoration: InputDecoration(hintText: '전화번호'),
     );
   }
 }

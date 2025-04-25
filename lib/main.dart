@@ -27,8 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Wanna Exercise App',
       theme: appTheme,
-
-      home: HomePage(),
+      home: LoginPage(),
       // FirebaseAuth.instance.currentUser == null ? LoginPage() : HomePage(),
       // 로그인정보 없으면 LoginPage, 있으면 HomePage()로 시작
       // 로그아웃 버튼 구현 후 주석처리 해제 예정
