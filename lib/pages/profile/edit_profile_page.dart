@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/data/providers/user_provider.dart';
-// import 'package:firebase_auth/firebase_auth.dart'; 
+import 'package:firebase_auth/firebase_auth.dart'; 
 
 class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({super.key});
@@ -18,15 +18,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   void initState() {
     super.initState();
 
-    // 임시
-    uid = 'k0pb7JaMYSMXsRm3BN3E';
-
-    /*
+  
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       uid = user.uid;
     }
-    */
 
     Future.microtask(() {
       ref.read(userViewModelProvider.notifier).loadProfile(uid);
@@ -72,11 +68,13 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                       CircleAvatar(
                         radius: 100,
                         backgroundColor: const Color.fromARGB(255, 169, 211, 255),
+
                         backgroundImage: viewModel.selectedImage != null
                             ? FileImage(viewModel.selectedImage!)
                             : (viewModel.profile?.profileImage.isNotEmpty ?? false)
                                 ? NetworkImage(viewModel.profile!.profileImage)
                                 : null,
+
                         child: (viewModel.selectedImage == null &&
                                 (viewModel.profile?.profileImage.isEmpty ?? true))
                             ? const Icon(Icons.person, size: 100, color: Color(0xFF007AFF))

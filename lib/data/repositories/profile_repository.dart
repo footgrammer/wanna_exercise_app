@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:wanna_exercise_app/data/models/profile.dart';
 
@@ -8,6 +9,22 @@ class ProfileRepository {
 
   final _firestore = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
+
+  // 최초 로그인 시, 프로필 문서가 없으면 생성하는 
+Future<void> checkAndCreateUserProfile(String uid, {String? phone}) async {
+  final docRef = _firestore.collection('profile').doc(uid);
+  final snapshot = await docRef.get();
+
+  if (!snapshot.exists) {
+    await docRef.set({
+      'nickname': '김운동',
+      'phone': phone ?? '010-0000-0000',
+      'profileImage': '',
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
+}
+
 
   // 작성되어 있던 코드
   Future<List<Profile>> getAll() async {
@@ -60,5 +77,4 @@ Future<void> updateProfile({
 
   await _firestore.collection('profile').doc(uid).update(data);
 }
-
 }
