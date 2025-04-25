@@ -16,4 +16,12 @@ class AuthRepository {
       password: user.password,
     );
   }
+
+  Future<fb_auth.UserCredential> register(User user) async {
+    final formattedPhone = formatPhoneAsEmail(user.phone);
+    return auth.createUserWithEmailAndPassword(
+      email: formattedPhone,
+      password: user.password,
+    );
+  }
 }

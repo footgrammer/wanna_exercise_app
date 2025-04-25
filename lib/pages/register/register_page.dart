@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/core/on_submitted_func.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
+import 'package:wanna_exercise_app/data/view_models/auth_view_model.dart';
 import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_check_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends ConsumerStatefulWidget {
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  ConsumerState<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends ConsumerState<RegisterPage> {
   final phoneController = TextEditingController();
   final pwController = TextEditingController();
   final pwCkController = TextEditingController();
@@ -111,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             nextFocus: pwFocusNode,
                             validator: ValidatorLogin(),
                             onSubmittedFunction:
-                                () => onSubmittedFunc.moveFocusToNext(
+                                () => OnSubmittedFunc.moveFocusToNext(
                                   context,
                                   pwFocusNode,
                                 ),
@@ -125,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             nextFocus: pwCkFocusNode,
                             validator: ValidatorLogin(),
                             onSubmittedFunction:
-                                () => onSubmittedFunc.moveFocusToNext(
+                                () => OnSubmittedFunc.moveFocusToNext(
                                   context,
                                   pwCkFocusNode,
                                 ),
@@ -138,12 +140,12 @@ class _RegisterPageState extends State<RegisterPage> {
                             focus: pwCkFocusNode,
                             nextFocus: null,
                             validator: ValidatorLogin(),
-                            onSubmittedFunction: () {},
+                            onSubmittedFunction: handleRegister,
                             // TODO: register 연결
                           ),
                           SizedBox(height: 32),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: handleRegister,
                             // TODO: register 연결
                             child: Text('회원가입'),
                           ),
@@ -158,5 +160,22 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  Future<void> handleRegister() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+    final credential = await ref
+        .read(authViewModelProvider)
+        .register(phone: phoneController.text, password: pwController.text);
+
+    if (credential != null && credential.user != null) {
+      // TODO: 페이지 이동
+      print("회원가입 성공. 유저 UID: ${credential.user!.uid}");
+    } else {
+      // TODO: 스낵바 출력
+      print("회원가입 실패");
+    }
   }
 }

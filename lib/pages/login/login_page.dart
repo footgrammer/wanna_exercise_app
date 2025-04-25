@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/core/on_submitted_func.dart';
 import 'package:wanna_exercise_app/data/view_models/auth_view_model.dart';
+import 'package:wanna_exercise_app/pages/home/home_page.dart';
 import 'package:wanna_exercise_app/pages/register/register_page.dart';
 import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
@@ -114,7 +115,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             nextFocus: pwFocusNode,
                             validator: validatorLogin,
                             onSubmittedFunction:
-                                () => onSubmittedFunc.moveFocusToNext(
+                                () => OnSubmittedFunc.moveFocusToNext(
                                   context,
                                   pwFocusNode,
                                 ),
@@ -156,7 +157,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         .login(phone: phoneController.text, password: pwController.text);
 
     if (credential != null && credential.user != null) {
-      // TODO: 페이지 이동
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => HomePage()),
+        (route) => false, // 모든 이전 페이지 제거
+      );
       print("로그인 성공! 유저 UID: ${credential.user!.uid}");
     } else {
       // TODO: 스낵바 출력

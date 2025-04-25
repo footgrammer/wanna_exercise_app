@@ -21,6 +21,19 @@ class AuthViewModel {
       return null;
     }
   }
+
+  Future<fb_auth.UserCredential?> register({
+    required String phone,
+    required String password,
+  }) async {
+    final user = User(phone: phone, password: password);
+    try {
+      return await authRepo.register(user);
+    } catch (e) {
+      print("에러 메세지: $e");
+      return null;
+    }
+  }
 }
 
 final authViewModelProvider = Provider.autoDispose((ref) {
