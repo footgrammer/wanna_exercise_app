@@ -15,7 +15,7 @@ class PwCheckTextFormField extends StatelessWidget {
 
   final TextEditingController pwCkController;
   final FocusNode focus;
-  final FocusNode nextFocus;
+  final FocusNode? nextFocus;
   final ValidatorLogin validator;
   final FutureOr<void> Function()
   onSubmittedFunction; // Future<void>, void 함수 사용 가능

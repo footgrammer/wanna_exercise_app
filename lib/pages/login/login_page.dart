@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/core/on_submitted_func.dart';
 import 'package:wanna_exercise_app/data/view_models/auth_view_model.dart';
 import 'package:wanna_exercise_app/pages/register/register_page.dart';
-import 'package:wanna_exercise_app/pages/widgets/id_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
 
@@ -60,7 +60,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       Column(
                         children: [
                           Text(
-                            'Login',
+                            '로그인',
                             style: TextStyle(
                               fontSize: 34,
                               fontWeight: FontWeight.bold,
@@ -72,7 +72,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Don't have an account?",
+                                  "아직 계정이 없으신가요?",
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: Colors.grey[700],
@@ -95,7 +95,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     height: 50,
                                     color: Colors.transparent,
                                     child: Text(
-                                      "Sign Up",
+                                      "회원가입",
                                       style: TextStyle(
                                         fontSize: 13,
                                         color: Colors.blueAccent,
@@ -107,7 +107,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ],
                             ),
                           ),
-                          Row(children: [Text('ID'), Spacer()]),
+                          Row(children: [Text('전화번호'), Spacer()]),
                           SizedBox(height: 4),
                           PhoneTextFormField(
                             phoneController: phoneController,
@@ -120,7 +120,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                           ),
                           SizedBox(height: 16),
-                          Row(children: [Text('Password'), Spacer()]),
+                          Row(children: [Text('비밀번호'), Spacer()]),
                           SizedBox(height: 4),
                           PwTextFormField(
                             pwController: pwController,
@@ -132,7 +132,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           SizedBox(height: 32),
                           ElevatedButton(
                             onPressed: handleLogin,
-                            child: Text('Log in'),
+                            child: Text('로그인'),
                           ),
                         ],
                       ),

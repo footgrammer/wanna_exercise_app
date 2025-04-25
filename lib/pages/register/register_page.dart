@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wanna_exercise_app/core/on_submitted_func.dart';
 import 'package:wanna_exercise_app/core/validator_login.dart';
-import 'package:wanna_exercise_app/pages/widgets/id_text_form_field.dart';
-import 'package:wanna_exercise_app/pages/widgets/nickname_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_check_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
 
@@ -73,8 +72,37 @@ class _RegisterPageState extends State<RegisterPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-
-                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "계정이 있으신가요?",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.grey[700],
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 50,
+                                  color: Colors.transparent,
+                                  child: Text(
+                                    "로그인",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.blueAccent,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           Row(children: [Text('전화번호'), Spacer()]),
                           SizedBox(height: 4),
                           PhoneTextFormField(
@@ -108,22 +136,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           PwCheckTextFormField(
                             pwCkController: pwCkController,
                             focus: pwCkFocusNode,
-                            nextFocus: nicknameFocusNode,
+                            nextFocus: null,
                             validator: ValidatorLogin(),
-                            onSubmittedFunction:
-                                () => onSubmittedFunc.moveFocusToNext(
-                                  context,
-                                  nicknameFocusNode,
-                                ),
-                          ),
-                          SizedBox(height: 16),
-                          Row(children: [Text('닉네임'), Spacer()]),
-                          SizedBox(height: 4),
-                          NicknameTextFormField(
-                            nicknameController: nicknameController,
-                            focus: nicknameFocusNode,
-                            validator: ValidatorLogin(),
-                            onSubmittedFunction: () {}, // TODO: register 연결
+                            onSubmittedFunction: () {},
+                            // TODO: register 연결
                           ),
                           SizedBox(height: 32),
                           ElevatedButton(
