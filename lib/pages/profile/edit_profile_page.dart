@@ -49,12 +49,12 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
         backgroundColor: const Color(0xFFE5E5E5),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF252524)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF007AFF)),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           '프로필 수정',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF252524)),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF007AFF)),
         ),
         centerTitle: false,
       ),

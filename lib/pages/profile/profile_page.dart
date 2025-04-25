@@ -39,14 +39,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         backgroundColor: const Color(0xFFE5E5E5),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF252524)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF007AFF)),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           '프로필',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xFF252524),
+            color: Color(0xFF007AFF),
           ),
         ),
         centerTitle: false,
@@ -58,20 +58,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    radius: 60,
+                    radius: 100,
                     backgroundColor: mainColor.withOpacity(0.2),
                     backgroundImage: profile.profileImage.isNotEmpty
                         ? NetworkImage(profile.profileImage)
                         : null,
                     child: profile.profileImage.isEmpty
-                        ? Icon(Icons.person, size: 60, color: mainColor)
+                        ? Icon(Icons.person, size: 100, color: mainColor)
                         : null,
                   ),
                   const SizedBox(height: 16),
                   Text(
                     profile.nickname,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF252524),
                     ),
