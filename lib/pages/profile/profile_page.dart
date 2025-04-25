@@ -78,7 +78,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    profile.email,
+                    profile.phone,
                     style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                   ),
                 ],

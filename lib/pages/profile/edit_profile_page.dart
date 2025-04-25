@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/data/providers/user_provider.dart';
-// import 'package:firebase_auth/firebase_auth.dart'; // 🔒 나중에 사용
+// import 'package:firebase_auth/firebase_auth.dart'; 
 
 class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({super.key});
@@ -18,10 +18,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   void initState() {
     super.initState();
 
-    // 🔧 현재는 임시 테스트용 UID로 설정
+    // 임시
     uid = 'k0pb7JaMYSMXsRm3BN3E';
 
-    // 🔒 정식 FirebaseAuth 연동 시 아래 주석 해제
     /*
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
