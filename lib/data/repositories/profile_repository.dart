@@ -1,12 +1,17 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:wanna_exercise_app/data/models/profile.dart';
 
 class ProfileRepository {
-  const ProfileRepository();
-  Future<List<Profile>> getAll() async {
-    final firestore = FirebaseFirestore.instance;
+  ProfileRepository();
 
-    final collectionRef = firestore.collection('user');
+  final _firestore = FirebaseFirestore.instance;
+  final _storage = FirebaseStorage.instance;
+
+  // 작성되어 있던 코드
+  Future<List<Profile>> getAll() async {
+    final collectionRef = _firestore.collection('user');
     final snapshot = await collectionRef.get();
     final documentSnapshots = snapshot.docs;
 
@@ -15,4 +20,45 @@ class ProfileRepository {
       return Profile.fromJson(map);
     }).toList(); // Profile 전체 리스트 반환
   }
+
+  // 추가함 : 특정 유저 프로필 가져오기
+  Future<Profile?> getProfile(String uid) async {
+    final doc = await _firestore.collection('profile').doc(uid).get();
+    if (!doc.exists) return null;
+    return Profile.fromJson(doc.data()!);
+  }
+
+  // 추가함 : 프로필 이미지 업로드 및 URL Firestore에 저장
+  Future<String> uploadProfileImage(String uid, File file) async {
+    final ref = _storage.ref().child('profiles/$uid.jpg');
+    await ref.putFile(file);
+    final url = await ref.getDownloadURL();
+
+    await _firestore.collection('profile').doc(uid).update({
+      'profileImage': url,
+    });
+
+    return url;
+  }
+
+  //추가함 : 닉네임 업데이트
+  Future<void> updateNickname(String uid, String nickname) async {
+  await _firestore.collection('profile').doc(uid).update({
+    'nickname': nickname,
+  });
+}
+
+//추가함 : 닉네임, 이미지 URL 동시 업데이트
+Future<void> updateProfile({
+  required String uid,
+  String? nickname,
+  String? profileImageUrl,
+}) async {
+  final data = <String, dynamic>{};
+  if (nickname != null) data['nickname'] = nickname;
+  if (profileImageUrl != null) data['profileImage'] = profileImageUrl;
+
+  await _firestore.collection('profile').doc(uid).update(data);
+}
+
 }
