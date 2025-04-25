@@ -4,7 +4,6 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/firebase_options.dart';
 import 'package:wanna_exercise_app/pages/login/login_page.dart';
-import 'package:wanna_exercise_app/pages/post/create_post_page.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 import 'package:wanna_exercise_app/pages/home/home_page.dart';
 
@@ -28,7 +27,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Wanna Exercise App',
       theme: appTheme,
-      home: CreatePostPage(),
+
+      home: HomePage(),
+      // FirebaseAuth.instance.currentUser == null ? LoginPage() : HomePage(),
+      // 로그인정보 없으면 LoginPage, 있으면 HomePage()로 시작
+      // 로그아웃 버튼 구현 후 주석처리 해제 예정
     );
   }
 }

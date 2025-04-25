@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/core/on_submitted_func.dart';
-import 'package:wanna_exercise_app/core/validator_login.dart';
+import 'package:wanna_exercise_app/core/validator_util.dart';
 import 'package:wanna_exercise_app/data/view_models/auth_view_model.dart';
 import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
-import 'package:wanna_exercise_app/pages/widgets/pw_check_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
@@ -16,23 +15,21 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   final phoneController = TextEditingController();
   final pwController = TextEditingController();
   final pwCkController = TextEditingController();
-  final nicknameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  final validatorUtil = ValidatorUtil();
 
   final pwFocusNode = FocusNode(); // pw로 포커스 옮겨줄 때
   final pwCkFocusNode = FocusNode(); // pw check로 포커스 옮겨줄 때
-  final nicknameFocusNode = FocusNode(); // nickname으로 포커스 옮겨줄 때
 
   @override
   void dispose() {
     pwFocusNode.dispose();
     pwCkFocusNode.dispose();
-    nicknameFocusNode.dispose();
 
     phoneController.dispose();
     pwController.dispose();
     pwCkController.dispose();
-    nicknameController.dispose();
     super.dispose();
   }
 
@@ -111,7 +108,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             // TODO: 회원가입용 validator 생성 및 적용
                             phoneController: phoneController,
                             nextFocus: pwFocusNode,
-                            validator: ValidatorLogin(),
+                            validator: validatorUtil.registerValidatorPhone,
                             onSubmittedFunction:
                                 () => OnSubmittedFunc.moveFocusToNext(
                                   context,
@@ -125,7 +122,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             pwController: pwController,
                             focus: pwFocusNode,
                             nextFocus: pwCkFocusNode,
-                            validator: ValidatorLogin(),
+                            validator: validatorUtil.registerValidatorPw,
                             onSubmittedFunction:
                                 () => OnSubmittedFunc.moveFocusToNext(
                                   context,
@@ -135,13 +132,20 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           SizedBox(height: 16),
                           Row(children: [Text('비밀번호 확인'), Spacer()]),
                           SizedBox(height: 4),
-                          PwCheckTextFormField(
-                            pwCkController: pwCkController,
-                            focus: pwCkFocusNode,
-                            nextFocus: null,
-                            validator: ValidatorLogin(),
-                            onSubmittedFunction: handleRegister,
-                            // TODO: register 연결
+                          TextFormField(
+                            controller: pwCkController,
+                            focusNode: pwCkFocusNode,
+                            maxLength: 20,
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return '비밀번호 확인을 입력하세요.';
+                              }
+                              if (value != pwController.text) {
+                                return '비밀번호가 일치하지 않습니다.';
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(height: 32),
                           ElevatedButton(

@@ -6,7 +6,7 @@ import 'package:wanna_exercise_app/pages/home/home_page.dart';
 import 'package:wanna_exercise_app/pages/register/register_page.dart';
 import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
-import 'package:wanna_exercise_app/core/validator_login.dart';
+import 'package:wanna_exercise_app/core/validator_util.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   @override
@@ -19,7 +19,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   final formKey = GlobalKey<FormState>();
   final pwFocusNode = FocusNode(); // id onFieldSubmit 시 pw로 포커스 옮겨줄 때 사용
-  final validatorLogin = ValidatorLogin();
+  final validatorUtil = ValidatorUtil();
 
   @override
   void dispose() {
@@ -113,7 +113,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           PhoneTextFormField(
                             phoneController: phoneController,
                             nextFocus: pwFocusNode,
-                            validator: validatorLogin,
+                            validator: validatorUtil.loginValidatorPhone,
                             onSubmittedFunction:
                                 () => OnSubmittedFunc.moveFocusToNext(
                                   context,
@@ -127,7 +127,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             pwController: pwController,
                             focus: pwFocusNode,
                             nextFocus: null,
-                            validator: validatorLogin,
+                            validator: validatorUtil.loginValidatorPw,
                             onSubmittedFunction: handleLogin,
                           ),
                           SizedBox(height: 32),
