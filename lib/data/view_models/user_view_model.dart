@@ -36,13 +36,18 @@ class UserViewModel extends ChangeNotifier {
   }
 
   // 프로필 이미지 업로드 + Firestore 반영
-  Future<void> uploadProfileImage(String uid) async {
-    if (_selectedImage == null) return;
+ Future<void> uploadProfileImage(String uid) async {
+  if (_selectedImage == null) return;
 
+  try {
     final url = await _repository.uploadProfileImage(uid, _selectedImage!);
     _profile = _profile?.copyWith(profileImage: url);
     notifyListeners();
+  } catch (e, s) {
+    debugPrint('이미지 업로드 실패: $e');
+    debugPrintStack(stackTrace: s);
   }
+}
 
   // 닉네임 Firestore 업데이트
   Future<void> updateNickname(String uid) async {

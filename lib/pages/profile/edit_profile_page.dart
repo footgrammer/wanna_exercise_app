@@ -175,8 +175,15 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () async {
-                        await ref.read(userViewModelProvider.notifier).updateProfile(uid);
-                        Navigator.of(context).pop();
+                              final notifier = ref.read(userViewModelProvider.notifier);
+
+                              await notifier.updateProfile(uid);
+                              await notifier.loadProfile(uid);
+
+     
+                        if (mounted) {
+        Navigator.of(context).pop();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black,
