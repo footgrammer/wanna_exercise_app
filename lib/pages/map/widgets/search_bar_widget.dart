@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SearchBarWidget extends StatelessWidget {
-  const SearchBarWidget({super.key});
+  final Function(String) onSearch;
+
+  const SearchBarWidget({super.key, required this.onSearch});
 
   @override
   Widget build(BuildContext context) {
+    final controller = TextEditingController();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 50,
@@ -19,13 +23,20 @@ class SearchBarWidget extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: TextField(
+              controller: controller,
+              onSubmitted: onSearch,
               decoration: const InputDecoration(
                 hintText: '어떤 장소를 찾으세요?',
                 border: InputBorder.none,
               ),
             ),
           ),
-          IconButton(onPressed: () {}, icon: Icon(Icons.my_location)),
+          IconButton(
+            onPressed: () {
+              onSearch(controller.text);
+            },
+            icon: const Icon(Icons.my_location),
+          ),
         ],
       ),
     );
