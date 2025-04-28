@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final Function(String) onSearch;
+  final VoidCallback onCurrentLocationPressed;
 
-  const SearchBarWidget({super.key, required this.onSearch});
+  const SearchBarWidget({
+    super.key,
+    required this.onSearch,
+    required this.onCurrentLocationPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +24,6 @@ class SearchBarWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.arrow_back),
-          const SizedBox(width: 8),
           Expanded(
             child: TextField(
               controller: controller,
@@ -32,9 +35,7 @@ class SearchBarWidget extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {
-              onSearch(controller.text);
-            },
+            onPressed: onCurrentLocationPressed,
             icon: const Icon(Icons.my_location),
           ),
         ],
