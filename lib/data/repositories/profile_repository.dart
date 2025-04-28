@@ -76,4 +76,29 @@ class ProfileRepository {
 
     await _firestore.collection('profile').doc(uid).update(data);
   }
+
+  Future<List<Map<String, String>>> getUserUidsWithNicknames() async {
+    try {
+      // Firestore에서 프로필 컬렉션을 가져오기
+      final collectionRef = _firestore.collection('profile');
+      final snapshot = await collectionRef.get();
+      final documentSnapshots = snapshot.docs;
+
+      // UID와 닉네임을 매핑한 리스트 생성
+      List<Map<String, String>> userUidsWithNicknames = [];
+
+      for (var doc in documentSnapshots) {
+        final data = doc.data();
+        final uid = doc.id; // 문서의 ID는 UID
+        final nickname =
+            data['nickname'] ?? 'No Name'; // 닉네임을 가져오고 없으면 'No Name'을 기본값으로 설정
+
+        userUidsWithNicknames.add({'uid': uid, 'nickname': nickname});
+      }
+
+      return userUidsWithNicknames;
+    } catch (e) {
+      throw Exception("프로필을 불러오는 데 실패했습니다: $e");
+    }
+  }
 }

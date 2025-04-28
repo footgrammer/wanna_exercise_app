@@ -5,12 +5,13 @@ import 'package:wanna_exercise_app/data/models/chat_user_model.dart';
 class ChatRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // 메시지 스트림 가져오기
   Stream<List<ChatRoomModel>> getMessages(String roomId) {
     return _firestore
         .collection('chatRooms')
         .doc(roomId)
         .collection('messages')
-        .orderBy('datetime', descending: true) // 최신 메시지가 먼저 오도록 변경
+        .orderBy('datetime', descending: true)
         .snapshots()
         .map(
           (snapshot) =>
@@ -20,6 +21,7 @@ class ChatRepository {
         );
   }
 
+  // UID로 사용자 정보 가져오기
   Future<ChatUser?> getUserByUID(String uid) async {
     try {
       final doc =
@@ -31,10 +33,11 @@ class ChatRepository {
       return ChatUser.fromMap(uid, doc.data()!);
     } catch (e) {
       print('Error fetching user: $e');
-      rethrow; // 에러를 다시 던져서 상위 레벨에서 처리할 수 있게 함
+      rethrow;
     }
   }
 
+  // 메시지 보내기
   Future<void> sendMessage({
     required String roomId,
     required String senderId,
@@ -59,6 +62,32 @@ class ChatRepository {
           });
     } catch (e) {
       print('Error sending message: $e');
+    }
+  }
+
+  // 채팅방 ID 생성 함수 추가
+  String generateRoomId(String uid1, String uid2) {
+    List<String> uids = [uid1, uid2];
+    uids.sort();
+    return '${uids[0]}_${uids[1]}';
+  }
+
+  // 새로운 채팅방 생성
+  Future<void> createChatRoom(String uid1, String uid2) async {
+    try {
+      String roomId = generateRoomId(uid1, uid2); // roomId 생성
+
+      // 채팅방이 이미 존재하는지 확인
+      var roomDoc = await _firestore.collection('chatRooms').doc(roomId).get();
+      if (!roomDoc.exists) {
+        await _firestore.collection('chatRooms').doc(roomId).set({
+          'roomId': roomId,
+          'users': [uid1, uid2],
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      print('Error creating chat room: $e');
     }
   }
 }
