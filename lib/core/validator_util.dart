@@ -37,8 +37,8 @@ class ValidatorUtil {
       return "비밀번호를 입력해 주세요.";
     }
     final reg = RegExp(r'(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]+$');
-    if (!reg.hasMatch(value!)) {
-      return "비밀번호는 영문자/숫자를 모두 포함해야 합니다.";
+    if (value!.length < 6 || !reg.hasMatch(value)) {
+      return "영문자와 숫자를 포함하여 6자 이상 입력해 주세요.";
     }
     return null;
   }

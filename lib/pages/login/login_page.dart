@@ -7,6 +7,7 @@ import 'package:wanna_exercise_app/pages/register/register_page.dart';
 import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_util.dart';
+import 'package:wanna_exercise_app/pages/widgets/show_confirm_pop_up.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   @override
@@ -114,6 +115,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             phoneController: phoneController,
                             nextFocus: pwFocusNode,
                             validator: validatorUtil.loginValidatorPhone,
+                            validateMode: AutovalidateMode.disabled,
                             onSubmittedFunction:
                                 () => OnSubmittedFunc.moveFocusToNext(
                                   context,
@@ -128,6 +130,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             focus: pwFocusNode,
                             nextFocus: null,
                             validator: validatorUtil.loginValidatorPw,
+                            validateMode: AutovalidateMode.disabled,
                             onSubmittedFunction: handleLogin,
                           ),
                           SizedBox(height: 32),
@@ -164,7 +167,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       );
       print("로그인 성공! 유저 UID: ${credential.user!.uid}");
     } else {
-      // TODO: 스낵바 출력
       print("로그인 실패");
     }
   }

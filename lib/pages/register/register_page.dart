@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/core/on_submitted_func.dart';
 import 'package:wanna_exercise_app/core/validator_util.dart';
 import 'package:wanna_exercise_app/data/view_models/auth_view_model.dart';
+import 'package:wanna_exercise_app/pages/home/home_page.dart';
 import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
+import 'package:wanna_exercise_app/pages/widgets/show_custom_snack_bar.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
@@ -118,6 +120,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                       nextFocus: pwFocusNode,
                                       validator:
                                           validatorUtil.registerValidatorPhone,
+                                      validateMode:
+                                          AutovalidateMode.onUserInteraction,
                                       onSubmittedFunction:
                                           () => OnSubmittedFunc.moveFocusToNext(
                                             context,
@@ -128,16 +132,22 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                   SizedBox(width: 20),
                                   GestureDetector(
                                     onTap: () async {
-                                      final message = await ref
+                                      final available = await ref
                                           .read(authViewModelProvider)
-                                          .isAlreadyRegistered(
+                                          .isPhoneAvailable(
                                             phoneController.text,
                                           );
                                       setState(() {
-                                        phoneValidationMessage = message;
-                                        isPhoneAvailable = message.contains(
-                                          '사용할 수 있는',
-                                        );
+                                        isPhoneAvailable = available;
+                                        if (isPhoneAvailable == null) {
+                                          phoneValidationMessage = null;
+                                        } else if (!isPhoneAvailable!) {
+                                          phoneValidationMessage =
+                                              '이미 등록된 전화번호입니다.';
+                                        } else if (isPhoneAvailable!) {
+                                          phoneValidationMessage =
+                                              '사용 가능한 전화번호입니다.';
+                                        }
                                       });
                                     },
                                     child: Container(
@@ -184,6 +194,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             focus: pwFocusNode,
                             nextFocus: pwCkFocusNode,
                             validator: validatorUtil.registerValidatorPw,
+                            validateMode: AutovalidateMode.onUserInteraction,
                             onSubmittedFunction:
                                 () => OnSubmittedFunc.moveFocusToNext(
                                   context,
@@ -201,13 +212,15 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             obscureText: true,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return '비밀번호 확인을 입력하세요.';
+                                return '비밀번호를 한번 더 입력하세요.';
                               }
                               if (value != pwController.text) {
                                 return '비밀번호가 일치하지 않습니다.';
                               }
                               return null;
                             },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                           ),
                           SizedBox(height: 32),
                           ElevatedButton(
@@ -231,16 +244,41 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     if (!formKey.currentState!.validate()) {
       return;
     }
+    if (isPhoneAvailable == null) {
+      print('전화번호 중복 확인 미실행 => 회원가입 종료');
+      setState(() {
+        phoneValidationMessage = "전화번호 중복 확인을 진행해주세요.";
+      });
+      return;
+    }
+    if (!isPhoneAvailable!) {
+      print('전화번호 중복 확인 결과 false => 회원가입 종료');
+      return;
+    }
+    print('회원가입 시도 계속 진행');
+
     final credential = await ref
         .read(authViewModelProvider)
         .register(phone: phoneController.text, password: pwController.text);
 
     if (credential != null && credential.user != null) {
-      // TODO: 페이지 이동
+      showCustomSnackBar(
+        context,
+        text: '회원가입 완료! ${phoneController.text} 로그인되었습니다.',
+        bottomPadding: 100,
+      );
       print("회원가입 성공. 유저 UID: ${credential.user!.uid}");
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => HomePage()),
+        (route) => false, // 모든 이전 페이지 제거
+      );
     } else {
-      // TODO: 스낵바 출력
-      print("회원가입 실패");
+      showCustomSnackBar(
+        context,
+        text: '회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        bottomPadding: 100,
+      );
     }
   }
 }

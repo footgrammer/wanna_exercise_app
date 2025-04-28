@@ -9,6 +9,7 @@ class PwTextFormField extends StatelessWidget {
     required this.focus,
     required this.nextFocus,
     required this.validator,
+    required this.validateMode,
     required this.onSubmittedFunction,
   });
 
@@ -16,6 +17,7 @@ class PwTextFormField extends StatelessWidget {
   final FocusNode focus;
   final FocusNode? nextFocus;
   final FormFieldValidator<String> validator;
+  final AutovalidateMode validateMode;
   final FutureOr<void> Function()
   onSubmittedFunction; // Future<void>, void 함수 사용 가능
 
@@ -26,6 +28,7 @@ class PwTextFormField extends StatelessWidget {
       focusNode: focus,
       textInputAction: TextInputAction.done,
       validator: validator,
+      autovalidateMode: validateMode,
       maxLength: 20,
       obscureText: true,
       onFieldSubmitted: (value) {

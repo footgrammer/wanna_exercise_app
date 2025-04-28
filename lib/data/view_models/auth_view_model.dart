@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 // user.dart 의 User 클래스가 firebase_auth내의 User 클래스와 이름이 겹쳐 firebase_auth를 다른 이름으로 호출
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wanna_exercise_app/core/validator_util.dart';
 import 'package:wanna_exercise_app/data/models/user.dart';
 import 'package:wanna_exercise_app/data/repositories/auth_repository.dart';
 
@@ -38,17 +39,19 @@ class AuthViewModel {
     }
   }
 
-  Future<String> isAlreadyRegistered(String phone) async {
+  ValidatorUtil validatorUtil = ValidatorUtil();
+
+  Future<bool?> isPhoneAvailable(String phone) async {
     try {
-      final result = await authRepo.isAlreadyRegistered(phone);
-      if (result) {
-        return "사용할 수 있는 전화번호입니다.";
-      } else {
-        return "사용할 수 없는 전화번호입니다.";
+      String? value = validatorUtil.registerValidatorPhone(phone);
+      if (value == null) {
+        final result = await authRepo.isPhoneAvailable(phone);
+        return result;
       }
+      return null;
     } catch (e) {
       print("에러 메세지: $e");
-      return "오류가 발생했습니다. 나중에 다시 시도해 주세요.";
+      return null;
     }
   }
 }

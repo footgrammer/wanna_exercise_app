@@ -18,7 +18,8 @@ class AuthRepository {
       email: formattedPhone,
       password: user.password,
     );
-    await _profileRepository.checkAndCreateUserProfile( //수정 : 로그인시 profile 문서가 없으면 생성
+    await _profileRepository.checkAndCreateUserProfile(
+      //수정 : 로그인시 profile 문서가 없으면 생성
       credential.user!.uid,
       phone: user.phone,
     );
@@ -33,13 +34,15 @@ class AuthRepository {
     );
   }
 
-  Future<bool> isAlreadyRegistered(String phone) async {
+  Future<bool> isPhoneAvailable(String phone) async {
     // authentication에 저장된 정보 말고 firestore에서 가져오기
-    final email = formatPhoneAsEmail(phone);
-    final list = await auth.fetchSignInMethodsForEmail(email);
-    print("조회 결과: $list");
-    print(list.isNotEmpty);
-    return list.isNotEmpty;
-    // 리스트 내부 요소가 존재하면 이미 등록된 전화번호
+
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('profile')
+            .where('phone', isEqualTo: phone)
+            .get();
+    print(snapshot.docs);
+    return snapshot.docs.isEmpty;
   }
 }

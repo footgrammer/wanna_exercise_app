@@ -9,12 +9,14 @@ class PhoneTextFormField extends StatelessWidget {
     required this.phoneController,
     required this.nextFocus,
     required this.validator,
+    required this.validateMode,
     required this.onSubmittedFunction,
   });
 
   final TextEditingController phoneController;
   final FocusNode nextFocus;
   final FormFieldValidator<String> validator;
+  final AutovalidateMode validateMode;
   final FutureOr<void> Function()
   onSubmittedFunction; // Future<void>, void 함수 사용 가능
 
@@ -25,6 +27,7 @@ class PhoneTextFormField extends StatelessWidget {
       textInputAction: TextInputAction.done,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       validator: validator,
+      autovalidateMode: validateMode,
       onFieldSubmitted: (value) {
         onSubmittedFunction();
       },
