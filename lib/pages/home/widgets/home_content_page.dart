@@ -39,10 +39,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 const SizedBox(height: 4),
                 Text(
                   currentAddress,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

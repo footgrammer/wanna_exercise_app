@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wanna_exercise_app/data/providers/chat_user_provider.dart';
+import 'package:wanna_exercise_app/data/repositories/profile_repository.dart'; // ProfileRepository 임포트
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_bottomsheet.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_list_view.dart';
+import 'package:wanna_exercise_app/data/models/profile.dart'; // Profile 모델 임포트
 
 class ChatRoomPage extends ConsumerWidget {
   final String roomId;
@@ -19,14 +20,24 @@ class ChatRoomPage extends ConsumerWidget {
       return Scaffold(body: Center(child: Text('로그인이 필요합니다')));
     }
 
-    final userAsync = ref.watch(chatUserProvider(uid));
+    final profileRepository = ProfileRepository();
 
-    return userAsync.when(
-      data: (user) {
-        // 유저 정보가 null일 경우 처리
-        if (user == null) {
+    return FutureBuilder<Profile?>(
+      future: profileRepository.getProfile(uid), // `uid`로 프로필 정보 가져오기
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+
+        if (snapshot.hasError) {
           return Scaffold(body: Center(child: Text('유저 정보를 불러올 수 없습니다')));
         }
+
+        if (!snapshot.hasData) {
+          return Scaffold(body: Center(child: Text('유저 정보가 존재하지 않습니다')));
+        }
+
+        final profile = snapshot.data;
 
         // user가 null이 아니면 정상적으로 화면 구성
         return Scaffold(
@@ -39,17 +50,16 @@ class ChatRoomPage extends ConsumerWidget {
               ChatRoomBottomsheet(
                 bottomPadding: MediaQuery.of(context).padding.bottom,
                 roomId: roomId,
-                senderId: user.uid,
+                senderId: uid,
                 senderImageUrl:
-                    user.profileImageUrl ??
-                    'https://default-profile-image-url.com', // 기본 이미지 URL
+                    profile?.profileImage ??
+                    'https://default-profile-image-url.com', // 프로필 이미지 URL
+                senderNickname: profile?.nickname ?? 'Unknown', // 닉네임
               ),
             ],
           ),
         );
       },
-      loading: () => Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (e, _) => Scaffold(body: Center(child: Text('유저 정보를 불러올 수 없습니다'))),
     );
   }
 }

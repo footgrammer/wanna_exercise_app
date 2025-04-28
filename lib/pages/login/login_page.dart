@@ -7,7 +7,7 @@ import 'package:wanna_exercise_app/pages/register/register_page.dart';
 import 'package:wanna_exercise_app/pages/widgets/phone_text_form_field.dart';
 import 'package:wanna_exercise_app/pages/widgets/pw_text_form_field.dart';
 import 'package:wanna_exercise_app/core/validator_util.dart';
-import 'package:wanna_exercise_app/pages/widgets/show_confirm_pop_up.dart';
+import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -23,6 +23,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final pwFocusNode = FocusNode(); // id onFieldSubmit 시 pw로 포커스 옮겨줄 때 사용
   final validatorUtil = ValidatorUtil();
+
+  bool isLoginFailed = false;
 
   @override
   void dispose() {
@@ -111,7 +113,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ],
                             ),
                           ),
-                          Row(children: [Text('전화번호'), Spacer()]),
+                          Row(children: [Text('휴대폰 번호'), Spacer()]),
                           SizedBox(height: 4),
                           PhoneTextFormField(
                             phoneController: phoneController,
@@ -135,7 +137,24 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             validateMode: AutovalidateMode.disabled,
                             onSubmittedFunction: handleLogin,
                           ),
-                          SizedBox(height: 32),
+                          Row(
+                            children: [
+                              SizedBox(height: isLoginFailed ? 20 : 0),
+                              Container(
+                                child:
+                                    isLoginFailed
+                                        ? Text(
+                                          '휴대폰번호와 비밀번호를 정확히 입력해 주세요',
+                                          style: TextStyle(
+                                            color: negativeColor,
+                                          ),
+                                        )
+                                        : null,
+                              ),
+                              SizedBox(height: isLoginFailed ? 30 : 10),
+                            ],
+                          ),
+
                           ElevatedButton(
                             onPressed: handleLogin,
                             child: Text('로그인'),
@@ -167,9 +186,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         MaterialPageRoute(builder: (_) => HomePage()),
         (route) => false, // 모든 이전 페이지 제거
       );
-      print("로그인 성공! 유저 UID: ${credential.user!.uid}");
     } else {
-      print("로그인 실패");
+      setState(() {
+        isLoginFailed = true;
+      });
     }
   }
 }

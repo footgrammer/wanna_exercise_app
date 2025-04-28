@@ -10,8 +10,8 @@ plugins {
 
 android {
     namespace = "com.example.wanna_exercise_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.wanna_exercise_app"
-        minSdk = 23 // ✅ 여기를 flutter.minSdkVersion 대신 23으로 수정
+        minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

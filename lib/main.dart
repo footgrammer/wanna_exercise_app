@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -24,13 +25,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Wanna Exercise App',
-      theme: appTheme,
-      home: LoginPage(),
-      // FirebaseAuth.instance.currentUser == null ? LoginPage() : HomePage(),
-      // 로그인정보 없으면 LoginPage, 있으면 HomePage()로 시작
-      // 로그아웃 버튼 구현 후 주석처리 해제 예정
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        final user = snapshot.data;
+
+        return MaterialApp(
+          title: 'Wanna Exercise App',
+          theme: appTheme,
+          home:
+              user == null
+                  ? LoginPage()
+                  : HomePage(), // 테스트 위해 홈페이지 바꾸는 경우 여기서 HomePage()만 바꿔 주세요
+        );
+      },
     );
   }
 }
