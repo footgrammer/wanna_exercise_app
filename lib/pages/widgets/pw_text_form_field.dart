@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:wanna_exercise_app/core/validator_login.dart';
 
 class PwTextFormField extends StatelessWidget {
   const PwTextFormField({
@@ -10,13 +9,15 @@ class PwTextFormField extends StatelessWidget {
     required this.focus,
     required this.nextFocus,
     required this.validator,
+    required this.validateMode,
     required this.onSubmittedFunction,
   });
 
   final TextEditingController pwController;
   final FocusNode focus;
   final FocusNode? nextFocus;
-  final ValidatorLogin validator;
+  final FormFieldValidator<String> validator;
+  final AutovalidateMode validateMode;
   final FutureOr<void> Function()
   onSubmittedFunction; // Future<void>, void 함수 사용 가능
 
@@ -26,11 +27,14 @@ class PwTextFormField extends StatelessWidget {
       controller: pwController,
       focusNode: focus,
       textInputAction: TextInputAction.done,
-      validator: validator.validatorPw,
+      validator: validator,
+      autovalidateMode: validateMode,
+      maxLength: 20,
+      obscureText: true,
       onFieldSubmitted: (value) {
         onSubmittedFunction();
       },
-      decoration: InputDecoration(hintText: 'Password'),
+      decoration: InputDecoration(hintText: '비밀번호'),
     );
   }
 }

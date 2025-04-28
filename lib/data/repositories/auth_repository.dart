@@ -18,7 +18,8 @@ class AuthRepository {
       email: formattedPhone,
       password: user.password,
     );
-    await _profileRepository.checkAndCreateUserProfile( //수정 : 로그인시 profile 문서가 없으면 생성
+    await _profileRepository.checkAndCreateUserProfile(
+      //수정 : 로그인시 profile 문서가 없으면 생성
       credential.user!.uid,
       phone: user.phone,
     );
@@ -31,5 +32,17 @@ class AuthRepository {
       email: formattedPhone,
       password: user.password,
     );
+  }
+
+  Future<bool> isPhoneAvailable(String phone) async {
+    // authentication에 저장된 정보 말고 firestore에서 가져오기
+
+    final snapshot =
+        await FirebaseFirestore.instance
+            .collection('profile')
+            .where('phone', isEqualTo: phone)
+            .get();
+    print(snapshot.docs);
+    return snapshot.docs.isEmpty;
   }
 }

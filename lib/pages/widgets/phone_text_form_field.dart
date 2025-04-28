@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:wanna_exercise_app/core/validator_login.dart';
+import 'package:flutter/services.dart';
 
 class PhoneTextFormField extends StatelessWidget {
   const PhoneTextFormField({
@@ -9,12 +9,14 @@ class PhoneTextFormField extends StatelessWidget {
     required this.phoneController,
     required this.nextFocus,
     required this.validator,
+    required this.validateMode,
     required this.onSubmittedFunction,
   });
 
   final TextEditingController phoneController;
   final FocusNode nextFocus;
-  final ValidatorLogin validator;
+  final FormFieldValidator<String> validator;
+  final AutovalidateMode validateMode;
   final FutureOr<void> Function()
   onSubmittedFunction; // Future<void>, void 함수 사용 가능
 
@@ -23,11 +25,13 @@ class PhoneTextFormField extends StatelessWidget {
     return TextFormField(
       controller: phoneController,
       textInputAction: TextInputAction.done,
-      validator: validator.validatorId,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      validator: validator,
+      autovalidateMode: validateMode,
       onFieldSubmitted: (value) {
         onSubmittedFunction();
       },
-      decoration: InputDecoration(hintText: 'ID'),
+      decoration: InputDecoration(hintText: '전화번호'),
     );
   }
 }
