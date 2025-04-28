@@ -8,8 +8,12 @@ import 'package:wanna_exercise_app/data/models/profile.dart'; // Profile 모델 
 
 class ChatRoomPage extends ConsumerWidget {
   final String roomId;
+  final String myUserId;
 
-  ChatRoomPage({required this.roomId});
+  ChatRoomPage({
+    required this.roomId,
+    required this.myUserId,
+  }); // myUserId를 생성자에 추가
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,18 +43,27 @@ class ChatRoomPage extends ConsumerWidget {
 
         final profile = snapshot.data;
 
+        // `roomId`에서 상대방 UID 추출 (두 UID 중 하나가 내 UID이고, 다른 하나가 상대방 UID)
+        final targetUserId = _getTargetUserId(uid!, roomId);
+
         // user가 null이 아니면 정상적으로 화면 구성
         return Scaffold(
           appBar: AppBar(title: Text('채팅방')),
           body: Column(
             children: [
-              // ChatRoomListView
-              ChatRoomListView(roomId: roomId, myUserId: uid),
+              // ChatRoomListView에 상대방 UID(targetUserId) 추가
+              Expanded(
+                child: ChatRoomListView(
+                  roomId: roomId,
+                  myUserId: myUserId, // myUserId 전달
+                  targetUserId: targetUserId, // 상대방 UID 넘기기
+                ),
+              ),
               // ChatRoomBottomsheet
               ChatRoomBottomsheet(
                 bottomPadding: MediaQuery.of(context).padding.bottom,
                 roomId: roomId,
-                senderId: uid,
+                senderId: myUserId, // myUserId 전달
                 senderImageUrl:
                     profile?.profileImage ??
                     'https://default-profile-image-url.com', // 프로필 이미지 URL
@@ -61,5 +74,11 @@ class ChatRoomPage extends ConsumerWidget {
         );
       },
     );
+  }
+
+  // roomId에서 상대방 UID 추출
+  String _getTargetUserId(String myUserId, String roomId) {
+    List<String> uids = roomId.split('_');
+    return uids.first == myUserId ? uids.last : uids.first;
   }
 }

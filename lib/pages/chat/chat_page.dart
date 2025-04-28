@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:wanna_exercise_app/pages/chat/chat_room_page.dart';
+import 'package:wanna_exercise_app/pages/chat/%08chat_user_list.dart';
+// 정상적인 경로로 수정
+import 'package:wanna_exercise_app/pages/chat/chat_room_page.dart'; // 정상적인 경로로 수정
 
 class ChatPage extends StatelessWidget {
+  final String myUserId;
+
+  ChatPage({required this.myUserId}); // myUserId 인자를 생성자로 추가
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +22,21 @@ class ChatPage extends StatelessWidget {
             ),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.people), // 유저리스트 아이콘
+            onPressed: () {
+              // 유저 리스트 화면으로 이동, myUserId 전달
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (_) => UserListScreen(myUserId: myUserId), // myUserId 전달
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -33,11 +54,16 @@ class ChatPage extends StatelessWidget {
               subtitle: Text('마지막에 한말....'),
               trailing: Text('2025.04.23'),
               onTap: () {
+                // roomId를 생성하고, myUserId를 ChatRoomPage로 전달
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ChatRoomPage(roomId: 'roomId_here'),
-                  ), // roomId 전달
+                    builder:
+                        (_) => ChatRoomPage(
+                          roomId: 'roomId_here', // 여기서 roomId를 설정해야 합니다.
+                          myUserId: myUserId, // myUserId를 전달
+                        ),
+                  ),
                 );
               },
             );

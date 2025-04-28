@@ -7,14 +7,14 @@ class ChatRoomBottomsheet extends ConsumerStatefulWidget {
   final String roomId;
   final String senderId;
   final String senderImageUrl;
-  final String senderNickname; // senderNickname 추가
+  final String senderNickname;
 
   ChatRoomBottomsheet({
     required this.bottomPadding,
     required this.roomId,
     required this.senderId,
     required this.senderImageUrl,
-    required this.senderNickname, // senderNickname 추가
+    required this.senderNickname,
   });
 
   @override
@@ -31,17 +31,19 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
     super.dispose();
   }
 
+  // 메시지 전송 함수
   void onSend() async {
     final content = controller.text.trim();
     if (content.isEmpty) return;
 
     final viewModel = ref.read(chatViewModelProvider.notifier);
 
+    // 실제로 사용자가 입력한 메시지를 보내기
     await viewModel.send(
       roomId: widget.roomId,
       senderId: widget.senderId,
       senderImageUrl: widget.senderImageUrl,
-      content: content,
+      content: content, // 사용자가 입력한 메시지 내용
     );
 
     controller.clear(); // 전송 후 입력창 비우기
@@ -50,7 +52,8 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70 + widget.bottomPadding,
+      // Container 높이 조정
+      height: 70 + widget.bottomPadding, // bottomPadding이 너무 적거나 많으면 조정해보세요
       color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -58,7 +61,7 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
           Expanded(
             child: Row(
               children: [
-                // 프로필 이미지와 닉네임 추가
+                // 프로필 이미지와 닉네임
                 CircleAvatar(
                   backgroundImage: NetworkImage(widget.senderImageUrl),
                 ),
@@ -68,6 +71,10 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
                   child: TextField(
                     controller: controller,
                     onSubmitted: (_) => onSend(),
+                    decoration: InputDecoration(
+                      hintText: "메시지를 입력하세요",
+                      border: InputBorder.none, // 기본 테두리 없애기
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -82,7 +89,7 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
               ],
             ),
           ),
-          SizedBox(height: widget.bottomPadding),
+          SizedBox(height: widget.bottomPadding), // 여백
         ],
       ),
     );
