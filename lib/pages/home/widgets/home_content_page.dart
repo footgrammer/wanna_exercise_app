@@ -3,6 +3,8 @@ import 'package:wanna_exercise_app/pages/home/widgets/build_activity_button.dart
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class HomeContentPage extends StatelessWidget {
+  const HomeContentPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +34,7 @@ class HomeContentPage extends StatelessWidget {
             ),
             const Spacer(),
             const SizedBox(height: 20),
-            
+
             const SizedBox(height: 20),
             Container(
               alignment: Alignment.centerLeft,

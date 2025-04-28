@@ -10,6 +10,8 @@ import 'package:wanna_exercise_app/core/validator_util.dart';
 import 'package:wanna_exercise_app/pages/widgets/show_confirm_pop_up.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
+  const LoginPage({super.key});
+
   @override
   ConsumerState<LoginPage> createState() => _LoginPageState();
 }

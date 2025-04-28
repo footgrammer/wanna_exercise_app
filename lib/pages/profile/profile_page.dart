@@ -87,7 +87,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   ),
                 ],
               ),
-            ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 16),
         child: FloatingActionButton(
@@ -98,11 +97,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             );
           },
           backgroundColor: mainColor.withOpacity(0.2),
-          child: const Icon(Icons.edit, color: mainColor),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
+          child: const Icon(Icons.edit, color: mainColor),
         ),
       ),
     );
