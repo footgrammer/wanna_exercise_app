@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatRoomSend extends StatelessWidget {
-  const ChatRoomSend({
-    super.key,
-    required this.content,
-    required this.dateTime,
-  });
+  ChatRoomSend({required this.content, required this.dateTime});
   final String content;
   final DateTime dateTime;
 
@@ -23,7 +20,8 @@ class ChatRoomSend extends StatelessWidget {
           child: Text(content, style: TextStyle(fontSize: 13)),
         ),
         Text(
-          dateTime.toIso8601String(),
+          DateFormat('yyyy-MM-dd HH:mm').format(dateTime),
+
           style: TextStyle(fontSize: 13, color: Colors.black),
         ),
       ],
