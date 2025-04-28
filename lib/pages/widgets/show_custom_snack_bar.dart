@@ -7,11 +7,7 @@ void showCustomSnackBar(
   required double bottomPadding,
 }) {
   final snackBar = SnackBar(
-    content: Text(
-      text,
-      style: TextStyle(color: Colors.white),
-      textAlign: TextAlign.center,
-    ),
+    content: Text(text, style: TextStyle(color: Colors.white)),
     behavior: SnackBarBehavior.floating,
     margin: EdgeInsets.fromLTRB(20, 0, 20, bottomPadding),
     duration: Duration(seconds: 2),
