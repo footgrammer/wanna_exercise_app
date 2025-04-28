@@ -31,7 +31,7 @@ class PhoneTextFormField extends StatelessWidget {
       onFieldSubmitted: (value) {
         onSubmittedFunction();
       },
-      decoration: InputDecoration(hintText: '전화번호'),
+      decoration: InputDecoration(hintText: '휴대폰 번호'),
     );
   }
 }

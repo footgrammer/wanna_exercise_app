@@ -245,17 +245,14 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       return;
     }
     if (isPhoneAvailable == null) {
-      print('전화번호 중복 확인 미실행 => 회원가입 종료');
       setState(() {
         phoneValidationMessage = "전화번호 중복 확인을 진행해주세요.";
       });
       return;
     }
     if (!isPhoneAvailable!) {
-      print('전화번호 중복 확인 결과 false => 회원가입 종료');
       return;
     }
-    print('회원가입 시도 계속 진행');
 
     final credential = await ref
         .read(authViewModelProvider)
@@ -267,7 +264,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         text: '회원가입 완료! ${phoneController.text} 로그인되었습니다.',
         bottomPadding: 100,
       );
-      print("회원가입 성공. 유저 UID: ${credential.user!.uid}");
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (_) => HomePage()),
