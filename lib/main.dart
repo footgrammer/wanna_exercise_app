@@ -4,7 +4,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/firebase_options.dart';
 import 'package:wanna_exercise_app/pages/login/login_page.dart';
-import 'package:wanna_exercise_app/pages/profile/profile_page.dart';
+import 'package:wanna_exercise_app/pages/post/create_post_page.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 import 'package:wanna_exercise_app/pages/home/home_page.dart';
 
@@ -18,7 +18,6 @@ void main() async {
   );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(child: MyApp()));
-
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Wanna Exercise App',
       theme: appTheme,
-      home: LoginPage(),
+      home: CreatePostPage(),
     );
   }
 }
