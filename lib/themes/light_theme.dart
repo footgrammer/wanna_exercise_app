@@ -20,6 +20,9 @@ final ThemeData appTheme = ThemeData(
   // 기본 색상
   primaryColor: primaryColor,
 
+  // 앱바 배경색상
+  appBarTheme: AppBarTheme(backgroundColor: backgroundColor),
+
   // 입력 장식 테마
   inputDecorationTheme: InputDecorationTheme(
     hintStyle: TextStyle(color: placeholderColor),
@@ -65,6 +68,8 @@ final ThemeData appTheme = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: primaryColor,
       foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
     ),
   ),
   iconTheme: IconThemeData(color: primaryColor),

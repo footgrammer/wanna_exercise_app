@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wanna_exercise_app/data/models/board.dart';
+import 'package:wanna_exercise_app/pages/board/board_detail_page.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class BoardItem extends StatelessWidget {
@@ -21,7 +22,16 @@ class BoardItem extends StatelessWidget {
     int participantsNumber = 7;
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return BoardDetailPage(board);
+            },
+          ),
+        );
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
