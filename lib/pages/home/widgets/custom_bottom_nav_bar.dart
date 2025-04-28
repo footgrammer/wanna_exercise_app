@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:wanna_exercise_app/pages/board/board_page.dart';
 import 'package:wanna_exercise_app/pages/home/widgets/home_content_page.dart';
-import 'package:wanna_exercise_app/pages/post/post_page.dart';
 import 'package:wanna_exercise_app/pages/map/map_page.dart';
 import 'package:wanna_exercise_app/pages/chat/chat_page.dart';
 import 'package:wanna_exercise_app/pages/profile/profile_page.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
+  const CustomBottomNavBar({super.key});
+
   @override
   State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
 }
@@ -16,10 +18,10 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
 
   final List<Widget> _pages = [
     HomeContentPage(),
-    PostPage(),
+    BoardPage(),
     MapPage(),
     ChatPage(),
-    ProfilePage()
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

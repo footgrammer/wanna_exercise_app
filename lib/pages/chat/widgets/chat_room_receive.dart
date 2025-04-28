@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:wanna_exercise_app/pages/widgets/user_profile_image.dart';
 
 class ChatRoomReceive extends StatelessWidget {
-  ChatRoomReceive({
+  const ChatRoomReceive({
+    super.key,
     required this.imgUrl,
     required this.showProfile,
     required this.content,

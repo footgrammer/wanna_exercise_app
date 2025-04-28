@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 
-
-class UserProfileImage extends StatelessWidget{
+class UserProfileImage extends StatelessWidget {
   const UserProfileImage({
-  super.key,
-  required this.demension,
-  required this.imgUrl});
+    super.key,
+    required this.demension,
+    required this.imgUrl,
+  });
 
   final double demension;
   final String imgUrl;
 
-
-
-Widget build(BuildContext context) {
-  return SizedBox.square(
-    dimension: demension,
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(100),
-      child: Image.network(imgUrl,
-      fit: BoxFit.cover,),
-    ),
-  );
-}}
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: demension,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: Image.network(imgUrl, fit: BoxFit.cover),
+      ),
+    );
+  }
+}

@@ -10,6 +10,8 @@ import 'package:wanna_exercise_app/pages/widgets/show_custom_snack_bar.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
+  const RegisterPage({super.key});
+
   @override
   ConsumerState<RegisterPage> createState() => _RegisterPageState();
 }
