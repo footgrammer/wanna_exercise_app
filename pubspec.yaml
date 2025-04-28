@@ -44,6 +44,7 @@ dependencies:
   http: ^0.13.6
   firebase_storage: ^12.4.5 #추가
   image_picker: ^1.0.7 #추가
+  geolocator: ^10.1.0 #GPS좌표 접근
 
 dev_dependencies:
   flutter_test:
