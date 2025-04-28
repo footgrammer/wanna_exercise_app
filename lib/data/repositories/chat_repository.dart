@@ -26,7 +26,7 @@ class ChatRepository {
     required String content,
   }) async {
     await _firestore
-        .collection('chatrooms')
+        .collection('chatRooms')
         .doc(roomId)
         .collection('messages')
         .add({

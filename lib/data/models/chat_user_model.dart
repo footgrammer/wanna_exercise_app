@@ -12,8 +12,8 @@ class ChatUser {
   factory ChatUser.fromMap(String uid, Map<String, dynamic> map) {
     return ChatUser(
       uid: uid,
-      name: map['name'] ?? '',
-      profileImageUrl: map['profileImageUrl'] ?? '',
+      name: map['name'] ?? 'Unnamed User', // 이름이 없을 경우 기본값 설정
+      profileImageUrl: map['profileImageUrl'] ?? '', // 기본 이미지 URL을 빈 문자열로 설정
     );
   }
 }

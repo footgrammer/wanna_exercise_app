@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wanna_exercise_app/data/models/chat_message_model.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_receive.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_send.dart';
-import 'package:wanna_exercise_app/data/models/chat_user_model.dart';
 
 class ChatRoomListView extends ConsumerWidget {
   final String roomId;
@@ -51,7 +50,7 @@ class ChatRoomListView extends ConsumerWidget {
               } else {
                 // 상대방이 보낸 메시지
                 return ChatRoomReceive(
-                  imgUrl: message.senderImageUrl ?? "",
+                  imgUrl: message.senderImageUrl,
                   showProfile: _shouldShowProfile(docs, index),
                   content: message.content,
                   dateTime: message.sentAt.toDate(),

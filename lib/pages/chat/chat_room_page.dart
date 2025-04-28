@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wanna_exercise_app/data/providers/chat_user_provider.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_bottomsheet.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_list_view.dart';
-import 'package:wanna_exercise_app/data/providers/chat_user_provider.dart'; // 채팅 유저 프로바이더 (chatUserProvider)
 
 class ChatRoomPage extends ConsumerWidget {
   final String roomId;
@@ -42,7 +42,7 @@ class ChatRoomPage extends ConsumerWidget {
                 senderId: user.uid,
                 senderImageUrl:
                     user.profileImageUrl ??
-                    'https://default-profile-image-url.com', // profileImageUrl이 없을 경우 기본 이미지 URL 사용
+                    'https://default-profile-image-url.com', // 기본 이미지 URL
               ),
             ],
           ),
