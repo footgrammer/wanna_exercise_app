@@ -1,8 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:wanna_exercise_app/data/view_models/home_content_view_model.dart';
 import 'package:wanna_exercise_app/pages/home/widgets/build_activity_button.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
-class HomeContentPage extends StatelessWidget {
+class HomeContentPage extends StatefulWidget {
+  const HomeContentPage({super.key});
+
+  @override
+  State<HomeContentPage> createState() => _HomeContentPageState();
+}
+
+class _HomeContentPageState extends State<HomeContentPage> {
+  final HomeContentViewModel viewModel = HomeContentViewModel();
+  String currentAddress = '위치 가져오는 중...';
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.getCurrentLocation((updatedAddress) {
+      setState(() {
+        currentAddress = updatedAddress;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,27 +33,23 @@ class HomeContentPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            // 현재 위치
             Column(
-              children: const [
-                Text('현 위치 ▼', style: TextStyle(fontSize: 14)),
-                SizedBox(height: 4),
+              children: [
+                const Text('현 위치 ▼', style: TextStyle(fontSize: 14)),
+                const SizedBox(height: 4),
                 Text(
-                  '서울특별시 용산구',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  currentAddress,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             const Spacer(),
-            // 로고 이미지 (운동하실?)
             Image.asset(
               'assets/images/wanna_exercise.png',
               width: 300,
               fit: BoxFit.contain,
             ),
             const Spacer(),
-            const SizedBox(height: 20),
-            
             const SizedBox(height: 20),
             Container(
               alignment: Alignment.centerLeft,
@@ -43,7 +60,6 @@ class HomeContentPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // 카테고리 버튼들
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
