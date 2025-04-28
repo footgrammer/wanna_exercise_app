@@ -3,8 +3,8 @@ class Board {
   final String title; // 제목
   final String content; // 내용
   final DateTime date;
-  final String timeFrom; // 시작시간
-  final String timeTo; // 시작시간
+  final int timeFrom; // 시작시간
+  final int timeTo; // 시작시간
   final String location; // 장소
   final String locationAddress; // 장소주소
   final int number; //모집인원
@@ -26,7 +26,7 @@ class Board {
       type: json['type'],
       title: json['title'],
       content: json['content'],
-      date: json['date'],
+      date: DateTime.parse(json['date'] as String),
       timeFrom: json['timeFrom'],
       timeTo: json['timeTo'],
       location: json['location'],
@@ -39,7 +39,7 @@ class Board {
     'email': type,
     'title': title,
     'content': content,
-    'date': date,
+    'date': date.toIso8601String(),
     'timeFrom': timeFrom,
     'timeTo': timeTo,
     'location': location,
