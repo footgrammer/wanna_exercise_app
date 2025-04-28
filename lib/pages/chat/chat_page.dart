@@ -35,7 +35,9 @@ class ChatPage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => ChatRoomPage()),
+                  MaterialPageRoute(
+                    builder: (_) => ChatRoomPage(roomId: 'roomId_here'),
+                  ), // roomId 전달
                 );
               },
             );
