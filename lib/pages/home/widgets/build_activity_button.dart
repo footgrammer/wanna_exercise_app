@@ -4,12 +4,14 @@ class BuildActivityButton extends StatelessWidget{
   final String label;
   final Color textColor;
   final Color bgColor;
+  final IconData icon;
   // final Widget nextPage;
 
   const BuildActivityButton({
     required this.label,
     required this.textColor,
     required this.bgColor,
+    required this.icon,
     // required this.nextPage,
     super.key,
   });
@@ -23,20 +25,21 @@ class BuildActivityButton extends StatelessWidget{
         // );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        width: double.infinity,
-        child: Center(
-          child: Text(
-            label,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor),
-          ),
-        ),
+      width: 90,
+      height: 90,
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(20),
       ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: textColor),
+          const SizedBox(height: 4),
+          Text(label, style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
+        ],
+      ),
+    ),
     );
   }
 }
