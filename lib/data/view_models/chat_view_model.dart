@@ -5,6 +5,7 @@ class ChatViewModel extends StateNotifier<AsyncValue<void>> {
   final ChatRepository _repo;
   ChatViewModel(this._repo) : super(const AsyncValue.data(null));
 
+  // ViewModel에서 send() 수정
   Future<void> send({
     required String roomId,
     required String senderId,
@@ -13,6 +14,7 @@ class ChatViewModel extends StateNotifier<AsyncValue<void>> {
   }) async {
     try {
       state = const AsyncValue.loading();
+      // 메시지 전송
       await _repo.sendMessage(
         roomId: roomId,
         senderId: senderId,

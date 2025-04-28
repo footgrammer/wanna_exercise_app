@@ -7,12 +7,14 @@ class ChatRoomBottomsheet extends ConsumerStatefulWidget {
   final String roomId;
   final String senderId;
   final String senderImageUrl;
+  final String senderNickname; // senderNickname 추가
 
   ChatRoomBottomsheet({
     required this.bottomPadding,
     required this.roomId,
     required this.senderId,
     required this.senderImageUrl,
+    required this.senderNickname, // senderNickname 추가
   });
 
   @override
@@ -56,6 +58,12 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
           Expanded(
             child: Row(
               children: [
+                // 프로필 이미지와 닉네임 추가
+                CircleAvatar(
+                  backgroundImage: NetworkImage(widget.senderImageUrl),
+                ),
+                SizedBox(width: 10),
+                Text(widget.senderNickname), // senderNickname 표시
                 Expanded(
                   child: TextField(
                     controller: controller,
@@ -80,15 +88,3 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
     );
   }
 }
-
-// 상위 위젯에서 예시
-// return user.when(
-//   data: (userModel) => ChatRoomBottomsheet(
-//     bottomPadding: MediaQuery.of(context).padding.bottom,
-//     roomId: 'exampleRoomId',
-//     senderId: userModel.uid,
-//     senderImageUrl: userModel.profileImageUrl,
-//   ),
-//   loading: () => CircularProgressIndicator(),
-//   error: (e, _) => Text('유저 정보를 불러올 수 없습니다'),
-// );

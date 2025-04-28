@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:wanna_exercise_app/pages/widgets/user_profile_image.dart';
 
 class ChatRoomReceive extends StatelessWidget {
@@ -37,7 +38,7 @@ class ChatRoomReceive extends StatelessWidget {
                 child: Text(content, style: TextStyle(fontSize: 13)),
               ),
 
-              Text(dateTime.toIso8601String()),
+              Text(DateFormat('yyyy-MM-dd HH:mm').format(dateTime)),
             ],
           ),
         ),

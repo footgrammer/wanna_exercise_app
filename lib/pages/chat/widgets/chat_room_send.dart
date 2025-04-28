@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatRoomSend extends StatelessWidget {
-  ChatRoomSend({
-    required this.content, 
-    required this.dateTime
-    });
+  ChatRoomSend({required this.content, required this.dateTime});
   final String content;
   final DateTime dateTime;
 
@@ -16,17 +14,16 @@ class ChatRoomSend extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 224, 224, 224),
-            borderRadius: BorderRadius.circular(16)
+            borderRadius: BorderRadius.circular(16),
           ),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Text(content,
-          style: TextStyle(fontSize: 13),),
+          child: Text(content, style: TextStyle(fontSize: 13)),
         ),
-        Text(dateTime.toIso8601String(),
-        style: TextStyle(
-          fontSize: 13,
-          color: Colors.black
-        ),)
+        Text(
+          DateFormat('yyyy-MM-dd HH:mm').format(dateTime),
+
+          style: TextStyle(fontSize: 13, color: Colors.black),
+        ),
       ],
     );
   }
