@@ -149,6 +149,7 @@ class _BoardPageState extends ConsumerState<BoardPage> {
     final boardState = ref.watch(boardViewModelProvider);
     return Scaffold(
       appBar: AppBar(),
+
       // 장소 및 날짜 필터링
       // appBar: AppBar(
       //   centerTitle: true,
@@ -176,6 +177,7 @@ class _BoardPageState extends ConsumerState<BoardPage> {
       //     ],
       //   ),
       // ),
+      //
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
         child: Column(
