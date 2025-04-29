@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/firebase_options.dart';
+import 'package:wanna_exercise_app/pages/home/home_page.dart';
+import 'package:wanna_exercise_app/pages/login/login_page.dart';
 import 'package:wanna_exercise_app/pages/splash/home_after_splash.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
@@ -24,15 +26,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        return MaterialApp(
-          title: 'Wanna Exercise App',
-          theme: appTheme,
-          home: HomeAfterSplash(snapshot: snapshot),
-        );
-      },
+    return MaterialApp(
+      title: 'Wanna Exercise App',
+      theme: appTheme,
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          final user = snapshot.data;
+          final Widget target =
+              user == null ? const LoginPage() : const HomePage();
+          return HomeAfterSplash(child: target);
+        },
+      ),
     );
   }
 }
