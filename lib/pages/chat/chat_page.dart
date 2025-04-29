@@ -12,9 +12,12 @@ class ChatPage extends StatelessWidget {
 
   ChatPage({required this.myUserId});
 
-  Future<String> _getOtherUserNickname(String otherUserId) async {
+  Future<Map<String, String>> _getOtherUserInfo(String otherUserId) async {
     final profile = await _profileRepository.getProfile(otherUserId);
-    return profile?.nickname ?? '알 수 없음';
+    return {
+      'nickname': profile?.nickname ?? '알 수 없음',
+      'profileImage': profile?.profileImage ?? '', // Firestore에서 불러온 이미지 URL
+    };
   }
 
   Future<Map<String, dynamic>> _getLastMessage(String roomId) async {
@@ -47,8 +50,8 @@ class ChatPage extends StatelessWidget {
           child: Text(
             '채팅 목록',
             style: TextStyle(
-              color: Color(0xFF1414b8),
               fontWeight: FontWeight.bold,
+              color: Color(0xFF007AFF),
             ),
           ),
         ),
@@ -99,12 +102,26 @@ class ChatPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final room = chatRooms[index];
                     return ListTile(
-                      leading: Icon(
-                        Icons.account_circle,
-                        size: 40,
-                        color: Color(0xFF1414b8),
+                      leading:
+                          room['profileImage'].isNotEmpty
+                              ? CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  room['profileImage'],
+                                ),
+                                radius: 20,
+                              )
+                              : Icon(
+                                Icons.account_circle,
+                                size: 40,
+                                color: Color.fromARGB(255, 134, 134, 245),
+                              ),
+                      title: Text(
+                        room['nickname'],
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      title: Text(room['nickname']),
                       subtitle: Text(
                         room['lastMessage'].isNotEmpty
                             ? room['lastMessage']
@@ -146,18 +163,18 @@ class ChatPage extends StatelessWidget {
         orElse: () => '알 수 없음',
       );
 
-      final nickname = await _getOtherUserNickname(otherUserId);
+      final otherUserInfo = await _getOtherUserInfo(otherUserId);
       final lastMessageData = await _getLastMessage(roomId);
 
       rooms.add({
         'roomId': roomId,
-        'nickname': nickname,
+        'nickname': otherUserInfo['nickname'],
+        'profileImage': otherUserInfo['profileImage'],
         'lastMessage': lastMessageData['content'],
         'lastTime': lastMessageData['datetime'],
       });
     }
 
-    // 최신 메시지 기준 정렬
     rooms.sort(
       (a, b) =>
           (b['lastTime'] as Timestamp).compareTo(a['lastTime'] as Timestamp),

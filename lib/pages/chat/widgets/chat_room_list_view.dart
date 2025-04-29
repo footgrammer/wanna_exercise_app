@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/data/models/chat_message_model.dart';
 import 'package:wanna_exercise_app/data/repositories/chat_repository.dart';
-import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_bottomsheet.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_receive.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_send.dart';
 
