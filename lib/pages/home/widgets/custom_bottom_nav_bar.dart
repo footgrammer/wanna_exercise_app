@@ -28,7 +28,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   final List<Widget> _pages = [
     HomeContentPage(),
     BoardPage(),
-    MapPage(),
+    MapPage(myUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
     ChatPage(myUserId: FirebaseAuth.instance.currentUser?.uid ?? ''),
     ProfilePage(),
   ];
