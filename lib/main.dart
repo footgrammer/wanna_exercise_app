@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/firebase_options.dart';
+import 'package:wanna_exercise_app/pages/home/widgets/home_content_page.dart';
 import 'package:wanna_exercise_app/pages/login/login_page.dart';
-import 'package:wanna_exercise_app/pages/post/create_post_page.dart';
+import 'package:wanna_exercise_app/pages/board/create_post_page.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 import 'package:wanna_exercise_app/pages/home/home_page.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
           home:
               user == null
                   ? LoginPage()
-                  : CreatePostPage(), // 테스트 위해 홈페이지 바꾸는 경우 여기서 HomePage()만 바꿔 주세요
+                  : HomeContentPage(), // 테스트 위해 홈페이지 바꾸는 경우 여기서 HomePage()만 바꿔 주세요
         );
       },
     );

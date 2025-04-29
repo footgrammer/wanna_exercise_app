@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wanna_exercise_app/pages/post/address_search_page.dart';
+import 'package:wanna_exercise_app/pages/board/address_search_page.dart';
 
 class CreatePostPage extends StatefulWidget {
-  const CreatePostPage({Key? key}) : super(key: key);
+  final String? initialType; // ⭐ 운동 종류 초기값 받기
+
+  const CreatePostPage({Key? key, this.initialType}) : super(key: key);
 
   @override
   State<CreatePostPage> createState() => _CreatePostPageState();
@@ -21,6 +23,12 @@ class _CreatePostPageState extends State<CreatePostPage> {
   TimeOfDay? selectedTimeTo;
 
   final List<String> sports = ['축구', '풋살', '농구', '러닝'];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedType = widget.initialType; // ⭐ 초기 선택값 설정
+  }
 
   Future<void> pickDate() async {
     final now = DateTime.now();
@@ -85,12 +93,16 @@ class _CreatePostPageState extends State<CreatePostPage> {
         child: ListView(
           children: [
             DropdownButtonFormField<String>(
+              value: selectedType, // ⭐ 초기값 적용
               decoration: const InputDecoration(
                 labelText: '운동 종류',
                 border: OutlineInputBorder(),
               ),
               items: sports.map((sport) {
-                return DropdownMenuItem(value: sport, child: Text(sport));
+                return DropdownMenuItem(
+                  value: sport,
+                  child: Text(sport),
+                );
               }).toList(),
               onChanged: (value) {
                 setState(() {
@@ -222,12 +234,17 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
                 child: const Text('작성 완료'),
               ),
-            )
+            ),
           ],
         ),
       ),
