@@ -136,22 +136,8 @@
   - 키워드 기반 장소 검색
   - 검색된 장소의 위도(lat), 경도(lng) 반환
 
-> 예시 요청:  
-> `https://dapi.kakao.com/v2/local/search/keyword.json?query=서울역`
 
-> 예시 응답:
-```json
-{
-  "documents": [
-    {
-      "place_name": "서울역",
-      "x": "126.9707",   
-      "y": "37.5536"
-    }
-  ]
-}
-
-## 🔐 4. Firebase Authentication
+### 🔐 4. Firebase Authentication
 
 - **사용 목적**: 사용자 로그인 및 회원가입 기능 구현
 - **사용 패키지**: `firebase_auth`
