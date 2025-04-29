@@ -17,7 +17,10 @@ class ChatRoomSend extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Text(content, style: TextStyle(fontSize: 13)),
+          child: Text(
+            content,
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
         ),
         Text(
           DateFormat('yyyy-MM-dd HH:mm').format(dateTime),
