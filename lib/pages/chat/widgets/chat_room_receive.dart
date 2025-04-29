@@ -18,13 +18,21 @@ class ChatRoomReceive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool showValidProfile =
+        showProfile &&
+        imgUrl.trim().isNotEmpty &&
+        Uri.tryParse(imgUrl)?.hasAbsolutePath == true;
+
     return Row(
       children: [
-        showProfile
+        showValidProfile
             ? UserProfileImage(demension: 50, imgUrl: imgUrl)
-            : SizedBox(width: 50),
-
-        SizedBox(width: 8),
+            : const Icon(
+              Icons.account_circle,
+              size: 40,
+              color: Color.fromARGB(255, 134, 134, 245),
+            ),
+        const SizedBox(width: 8),
 
         Expanded(
           child: Column(
@@ -36,7 +44,10 @@ class ChatRoomReceive extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text(content, style: TextStyle(fontSize: 13)),
+                child: Text(
+                  content,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
               ),
 
               Text(DateFormat('yyyy-MM-dd HH:mm').format(dateTime)),
