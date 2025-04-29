@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           home:
               user == null
                   ? LoginPage()
-                  : HomeContentPage(), // 테스트 위해 홈페이지 바꾸는 경우 여기서 HomePage()만 바꿔 주세요
+                  : HomePage(), // 테스트 위해 홈페이지 바꾸는 경우 여기서 HomePage()만 바꿔 주세요 //HomePage에 하단바 포함입니다.
         );
       },
     );
