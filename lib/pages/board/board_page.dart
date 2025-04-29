@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/data/models/board.dart';
 import 'package:wanna_exercise_app/data/providers/board_provider.dart';
-import 'package:wanna_exercise_app/data/view_models/board_view_model.dart';
 import 'package:wanna_exercise_app/pages/board/widgets/board_item.dart';
 import 'package:wanna_exercise_app/pages/board/widgets/filter_button.dart';
-import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class BoardPage extends ConsumerStatefulWidget {
   @override
@@ -34,13 +32,13 @@ class _BoardPageState extends ConsumerState<BoardPage> {
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
         child: Column(
           children: [
-            getFilterButtonList(),
+            getFilterButtonList(ref),
             SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
-                itemCount: boardState.boards?.length ?? 0,
+                itemCount: boardState.filteredBoards?.length ?? 0,
                 itemBuilder: (context, index) {
-                  final List<Board> boards = boardState.boards!;
+                  final List<Board> boards = boardState.filteredBoards!;
                   return BoardItem(boards[index]);
                 },
               ),
@@ -51,39 +49,55 @@ class _BoardPageState extends ConsumerState<BoardPage> {
     );
   }
 
-  Row getFilterButtonList() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        FilterButton(
-          text: '⚽️ 축구',
-          filterFunction: () {
-            print('축구 필터 function');
-          },
+  SizedBox getFilterButtonList(WidgetRef ref) {
+    return SizedBox(
+      height: 48,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: BouncingScrollPhysics(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            FilterButton(
+              text: '💪 전체',
+              filterFunction: () {
+                ref.read(boardViewModelProvider.notifier).setFilter(null);
+              },
+            ),
+            SizedBox(width: 8),
+            FilterButton(
+              text: '⚽️ 축구',
+              filterFunction: () {
+                ref.read(boardViewModelProvider.notifier).setFilter('soccer');
+              },
+            ),
+            SizedBox(width: 8),
+            FilterButton(
+              text: '⚽️ 풋살',
+              filterFunction: () {
+                ref.read(boardViewModelProvider.notifier).setFilter('futsal');
+              },
+            ),
+            SizedBox(width: 8),
+            FilterButton(
+              text: '🏃‍♂️ 러닝',
+              filterFunction: () {
+                ref.read(boardViewModelProvider.notifier).setFilter('running');
+              },
+            ),
+            SizedBox(width: 8),
+            FilterButton(
+              text: '🏀 농구',
+              filterFunction: () {
+                ref
+                    .read(boardViewModelProvider.notifier)
+                    .setFilter('basketball');
+              },
+            ),
+            SizedBox(width: 8),
+          ],
         ),
-        SizedBox(width: 8),
-        FilterButton(
-          text: '⚽️ 풋살',
-          filterFunction: () {
-            print('풋살 필터 function');
-          },
-        ),
-        SizedBox(width: 8),
-        FilterButton(
-          text: '🏃‍♂️ 러닝',
-          filterFunction: () {
-            print('러닝 필터 function');
-          },
-        ),
-        SizedBox(width: 8),
-        FilterButton(
-          text: '🏀 농구',
-          filterFunction: () {
-            print('농구 필터 function');
-          },
-        ),
-        SizedBox(width: 8),
-      ],
+      ),
     );
   }
 }
