@@ -24,8 +24,7 @@ class ChatRepository {
   // UID로 사용자 정보 가져오기
   Future<ChatUser?> getUserByUID(String uid) async {
     try {
-      final doc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      final doc = await _firestore.collection('users').doc(uid).get();
       if (!doc.exists) {
         print('User not found for UID: $uid');
         return null;
@@ -37,7 +36,7 @@ class ChatRepository {
     }
   }
 
-  // 메시지 보내기
+  // 메시지 보내기 + 채팅방 업데이트
   Future<void> sendMessage({
     required String roomId,
     required String senderId,
@@ -60,12 +59,18 @@ class ChatRepository {
             'content': content,
             'datetime': FieldValue.serverTimestamp(),
           });
+
+      // 채팅방에 최근 메시지 업데이트
+      await _firestore.collection('chatRooms').doc(roomId).update({
+        'lastMessage': content,
+        'lastMessageTime': FieldValue.serverTimestamp(),
+      });
     } catch (e) {
       print('Error sending message: $e');
     }
   }
 
-  // 채팅방 ID 생성 함수 추가
+  // 채팅방 ID 생성
   String generateRoomId(String uid1, String uid2) {
     List<String> uids = [uid1, uid2];
     uids.sort();
@@ -75,19 +80,29 @@ class ChatRepository {
   // 새로운 채팅방 생성
   Future<void> createChatRoom(String uid1, String uid2) async {
     try {
-      String roomId = generateRoomId(uid1, uid2); // roomId 생성
+      String roomId = generateRoomId(uid1, uid2);
 
-      // 채팅방이 이미 존재하는지 확인
       var roomDoc = await _firestore.collection('chatRooms').doc(roomId).get();
       if (!roomDoc.exists) {
         await _firestore.collection('chatRooms').doc(roomId).set({
           'roomId': roomId,
           'users': [uid1, uid2],
           'createdAt': FieldValue.serverTimestamp(),
+          'lastMessage': '',
+          'lastMessageTime': null,
         });
       }
     } catch (e) {
       print('Error creating chat room: $e');
     }
+  }
+
+  // 채팅방 목록 가져오기 추가
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatRooms(String uid) {
+    return _firestore
+        .collection('chatRooms')
+        .where('users', arrayContains: uid)
+        .orderBy('lastMessageTime', descending: true)
+        .snapshots();
   }
 }
