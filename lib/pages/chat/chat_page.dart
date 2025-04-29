@@ -12,11 +12,13 @@ class ChatPage extends StatelessWidget {
 
   ChatPage({required this.myUserId});
 
+  // Firestore에서 상대방 닉네임 조회
   Future<String> _getOtherUserNickname(String otherUserId) async {
     final profile = await _profileRepository.getProfile(otherUserId);
     return profile?.nickname ?? '알 수 없음';
   }
 
+  // Firestore에서 마지막 메시지 가져오기
   Future<Map<String, dynamic>> _getLastMessage(String roomId) async {
     final messagesSnapshot =
         await FirebaseFirestore.instance
@@ -69,6 +71,7 @@ class ChatPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: StreamBuilder<QuerySnapshot>(
+          // Firestore 실시간 채팅방 스트림
           stream:
               FirebaseFirestore.instance
                   .collection('chatRooms')
@@ -86,6 +89,7 @@ class ChatPage extends StatelessWidget {
             final chatRoomDocs = snapshot.data!.docs;
 
             return FutureBuilder<List<Map<String, dynamic>>>(
+              // 각 채팅방의 마지막 메시지, 닉네임 정리 및 정렬
               future: _buildSortedChatRooms(chatRoomDocs),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -133,6 +137,7 @@ class ChatPage extends StatelessWidget {
     );
   }
 
+  // 채팅방 정렬용 리스트 생성 (닉네임, 마지막 메시지 포함)
   Future<List<Map<String, dynamic>>> _buildSortedChatRooms(
     List<QueryDocumentSnapshot> docs,
   ) async {
@@ -157,12 +162,11 @@ class ChatPage extends StatelessWidget {
       });
     }
 
-    // 최신 메시지 기준 정렬
+    // 마지막 메시지 시간 기준으로 최신순 정렬
     rooms.sort(
       (a, b) =>
           (b['lastTime'] as Timestamp).compareTo(a['lastTime'] as Timestamp),
     );
-
     return rooms;
   }
 }

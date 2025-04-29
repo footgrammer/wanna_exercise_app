@@ -1,25 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wanna_exercise_app/data/repositories/profile_repository.dart'; // ProfileRepository 임포트
+import 'package:wanna_exercise_app/data/repositories/profile_repository.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_bottomsheet.dart';
 import 'package:wanna_exercise_app/pages/chat/widgets/chat_room_list_view.dart';
-import 'package:wanna_exercise_app/data/models/profile.dart'; // Profile 모델 임포트
+import 'package:wanna_exercise_app/data/models/profile.dart';
 
 class ChatRoomPage extends ConsumerWidget {
   final String roomId;
   final String myUserId;
 
-  ChatRoomPage({
-    required this.roomId,
-    required this.myUserId,
-  }); // myUserId를 생성자에 추가
+  ChatRoomPage({required this.roomId, required this.myUserId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
 
-    // 유저가 로그인하지 않은 경우
     if (uid == null) {
       return Scaffold(body: Center(child: Text('로그인이 필요합니다')));
     }
@@ -27,7 +23,8 @@ class ChatRoomPage extends ConsumerWidget {
     final profileRepository = ProfileRepository();
 
     return FutureBuilder<Profile?>(
-      future: profileRepository.getProfile(uid), // `uid`로 프로필 정보 가져오기
+      // 현재 로그인된 사용자 프로필 정보 불러오기
+      future: profileRepository.getProfile(uid),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -43,31 +40,27 @@ class ChatRoomPage extends ConsumerWidget {
 
         final profile = snapshot.data;
 
-        // `roomId`에서 상대방 UID 추출 (두 UID 중 하나가 내 UID이고, 다른 하나가 상대방 UID)
-        final targetUserId = _getTargetUserId(uid!, roomId);
+        final targetUserId = _getTargetUserId(uid, roomId);
 
-        // user가 null이 아니면 정상적으로 화면 구성
         return Scaffold(
           appBar: AppBar(title: Text('채팅방')),
           body: Column(
             children: [
-              // ChatRoomListView에 상대방 UID(targetUserId) 추가
               Expanded(
                 child: ChatRoomListView(
                   roomId: roomId,
-                  myUserId: myUserId, // myUserId 전달
-                  targetUserId: targetUserId, // 상대방 UID 넘기기
+                  myUserId: myUserId,
+                  targetUserId: targetUserId,
                 ),
               ),
-              // ChatRoomBottomsheet
               ChatRoomBottomsheet(
                 bottomPadding: MediaQuery.of(context).padding.bottom,
                 roomId: roomId,
-                senderId: myUserId, // myUserId 전달
+                senderId: myUserId,
                 senderImageUrl:
                     profile?.profileImage ??
-                    'https://default-profile-image-url.com', // 프로필 이미지 URL
-                senderNickname: profile?.nickname ?? 'Unknown', // 닉네임
+                    'https://default-profile-image-url.com',
+                senderNickname: profile?.nickname ?? 'Unknown',
               ),
             ],
           ),

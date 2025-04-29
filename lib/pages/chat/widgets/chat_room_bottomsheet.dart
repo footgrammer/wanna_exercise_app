@@ -43,7 +43,7 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
       roomId: widget.roomId,
       senderId: widget.senderId,
       senderImageUrl: widget.senderImageUrl,
-      content: content, // 사용자가 입력한 메시지 내용
+      content: content,
     );
 
     controller.clear(); // 전송 후 입력창 비우기
@@ -52,8 +52,7 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Container 높이 조정
-      height: 70 + widget.bottomPadding, // bottomPadding이 너무 적거나 많으면 조정해보세요
+      height: 70 + widget.bottomPadding,
       color: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -61,7 +60,6 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
           Expanded(
             child: Row(
               children: [
-                // 프로필 이미지와 닉네임
                 CircleAvatar(
                   backgroundImage: NetworkImage(widget.senderImageUrl),
                 ),
@@ -73,7 +71,7 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
                     onSubmitted: (_) => onSend(),
                     decoration: InputDecoration(
                       hintText: "메시지를 입력하세요",
-                      border: InputBorder.none, // 기본 테두리 없애기
+                      border: InputBorder.none,
                     ),
                   ),
                 ),
@@ -89,7 +87,7 @@ class _ChatRoomBottomsheetState extends ConsumerState<ChatRoomBottomsheet> {
               ],
             ),
           ),
-          SizedBox(height: widget.bottomPadding), // 여백
+          SizedBox(height: widget.bottomPadding),
         ],
       ),
     );
