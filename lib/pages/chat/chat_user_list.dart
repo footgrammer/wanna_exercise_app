@@ -42,14 +42,17 @@ class UserListScreen extends StatelessWidget {
 
               return ListTile(
                 title: Text(nickname), // 닉네임을 표시
-                onTap: () {
-                  // 상대방 UID를 선택하면 roomId 생성
+                onTap: () async {
+                  // 여기부터 수정됨 (async 추가)
                   String roomId = _chatRepository.generateRoomId(
                     myUserId,
                     targetUid,
                   );
 
-                  // 생성된 roomId로 채팅방 화면 열기
+                  // 1. 채팅방 생성 먼저
+                  await _chatRepository.createChatRoom(myUserId, targetUid);
+
+                  // 2. 채팅방으로 이동
                   Navigator.push(
                     context,
                     MaterialPageRoute(
