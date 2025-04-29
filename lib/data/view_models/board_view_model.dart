@@ -15,7 +15,7 @@ class BoardViewModel extends Notifier<BoardState> {
 
   void getBoards() async {
     BoardRepository boardRepository = BoardRepository();
-    List<Board> boards = await boardRepository.getBoardsData();
+    List<Board>? boards = await boardRepository.getBoardsData();
     state = BoardState(boards);
     print('boards : $boards');
   }
