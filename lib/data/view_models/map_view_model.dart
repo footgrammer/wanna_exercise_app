@@ -24,7 +24,7 @@ class MapViewModel {
       final coords = await KakaoLocationHelper.getCoordsFromAddress(board.locationAddress);
       if (coords == null) continue; // 좌표 변환 실패하면 스킵
 
-      final marker = NMarker(id: board.title, position: coords);
+      final marker = NMarker(id: board.title, position: coords, icon: NOverlayImage.fromAssetImage('assets/images/exercise_marker.png'));
       // 마커 클릭했을 때 동작 (콜백으로 넘긴 onMarkerTap 호출)
       marker.setOnTapListener((_) {
         onMarkerTap(board);
