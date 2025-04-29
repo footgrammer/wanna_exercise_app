@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/firebase_options.dart';
-import 'package:wanna_exercise_app/pages/home/widgets/home_content_page.dart';
-import 'package:wanna_exercise_app/pages/login/login_page.dart';
 import 'package:wanna_exercise_app/pages/board/create_post_page.dart';
+import 'package:wanna_exercise_app/pages/splash/home_after_splash.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
-import 'package:wanna_exercise_app/pages/home/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,15 +28,10 @@ class MyApp extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        final user = snapshot.data;
-
         return MaterialApp(
           title: 'Wanna Exercise App',
           theme: appTheme,
-          home:
-              user == null
-                  ? LoginPage()
-                  : HomePage(), // 테스트 위해 홈페이지 바꾸는 경우 여기서 HomePage()만 바꿔 주세요 //HomePage에 하단바 포함입니다.
+          home: HomeAfterSplash(snapshot: snapshot),
         );
       },
     );
