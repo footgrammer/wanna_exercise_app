@@ -1,67 +1,55 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_naver_map/flutter_naver_map.dart';
-// import '../models/post_model.dart';
-// import '../repositories/map_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:wanna_exercise_app/data/models/board.dart';
+import 'package:wanna_exercise_app/utils/kakao_location_helper.dart';
+import 'package:geolocator/geolocator.dart';
 
-// class MapViewModel extends ChangeNotifier {
-//   final mapRepository = MapRepository();
-//   late NaverMapController mapController;
+class MapViewModel {
+  late NaverMapController mapController;// 지도 조작할 때 사용할 컨트롤러
+  List<Board> boards = [];// Firestore에서 불러온 모임(Board) 리스트
 
-//   List<PostModel> allPosts = [];
+/// Firestore에서 boards 데이터 불러오기
+  Future<void> loadBoards() async {
+    final snapshot = await FirebaseFirestore.instance.collection('boards').get();
+    boards = snapshot.docs.map((doc) => Board.fromJson(doc.data())).toList();
+  }
 
-//   // 더미 데이터 
-//   final List<PostModel> dummyPosts = [
-//     PostModel(
-//       location: '서울 강남역',
-//       title: '강남 러닝 크루',
-//       startTime: '오늘 오후 6시',
-//     ),
-//     PostModel(
-//       location: '전주 한옥마을',
-//       title: '전주 모임',
-//       startTime: '내일 오후 3시',
-//     ),
-//     PostModel(
-//       location: '해운대 해수욕장',
-//       title: '부산 아침 조깅',
-//       startTime: '이번 주말 오전 7시',
-//     ),
-//   ];
 
-//   Future<void> loadDummyMarkers(Function(NMarker marker, PostModel post) onMarkerReady) async {
-//     allPosts = dummyPosts;
+  /// boards 리스트를 지도에 마커로 표시
+  Future<void> addMarkers(Function(Board) onMarkerTap) async {
+    mapController.clearOverlays();
 
-//     for (final post in allPosts) {
-//       final coords = await mapRepository.getCoordsFromKakao(post.location);
-//       if (coords != null) {
-//         final marker = NMarker(id: post.location, position: coords);
-//         onMarkerReady(marker, post);
-//       }
-//     }
-//   }
+    for (final board in boards) {
+       // 카카오맵 API를 사용해 주소 -> 좌표 변환
+      final coords = await KakaoLocationHelper.getCoordsFromAddress(board.locationAddress);
+      if (coords == null) continue; // 좌표 변환 실패하면 스킵
 
-//   Future<void> moveToLocationAndFilterMarkers({
-//     required String keyword,
-//     required Function(NMarker marker, PostModel post) onMarkerReady,
-//   }) async {
-//     final center = await mapRepository.getCoordsFromKakao(keyword);
-//     if (center == null) return;
+      final marker = NMarker(id: board.title, position: coords);
+      // 마커 클릭했을 때 동작 (콜백으로 넘긴 onMarkerTap 호출)
+      marker.setOnTapListener((_) {
+        onMarkerTap(board);
+      });
 
-//     mapController.updateCamera(
-//       NCameraUpdate.scrollAndZoomTo(target: center, zoom: 13),
-//     );
-//     mapController.clearOverlays();
+      mapController.addOverlay(marker);// 지도에 마커 추가
+    }
+  }
+  /// 현재 내 위치로 지도 이동
+  Future<void> moveToCurrentLocation() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) return;// 권한 거부 시 리턴
 
-//     for (final post in allPosts) {
-//       final coords = await mapRepository.getCoordsFromKakao(post.location);
-//       if (coords != null && _isNearby(center, coords)) {
-//         final marker = NMarker(id: post.location, position: coords);
-//         onMarkerReady(marker, post);
-//       }
-//     }
-//   }
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    final current = NLatLng(position.latitude, position.longitude);
 
-//   bool _isNearby(NLatLng a, NLatLng b, {double maxMeters = 3000}) {
-//     return a.distanceTo(b) <= maxMeters;
-//   }
-// }
+    mapController.updateCamera(NCameraUpdate.scrollAndZoomTo(target: current, zoom: 13));
+  }
+  /// 검색한 지역으로 지도 이동
+  Future<void> searchAndShowRegion(String keyword) async {
+    final coords = await KakaoLocationHelper.getCoordsFromAddress(keyword);
+    if (coords == null) return;// 검색 실패 시 리턴
+
+    mapController.updateCamera(NCameraUpdate.scrollAndZoomTo(target: coords, zoom: 13));
+  }
+}
