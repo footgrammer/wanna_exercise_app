@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:wanna_exercise_app/data/repositories/board_repository.dart';
 
 import 'package:wanna_exercise_app/main.dart';
 

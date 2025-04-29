@@ -18,6 +18,8 @@ class FilterButton extends StatelessWidget {
       backgroundColor = accentColor2;
     } else if (text == '🏃‍♂️ 러닝') {
       backgroundColor = accentColor1;
+    } else {
+      backgroundColor = Colors.white;
     }
 
     return GestureDetector(
@@ -36,7 +38,8 @@ class FilterButton extends StatelessWidget {
               text,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color:
+                    backgroundColor == Colors.white ? textColor : Colors.white,
               ),
             ),
           ),
