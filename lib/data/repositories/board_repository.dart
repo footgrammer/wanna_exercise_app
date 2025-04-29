@@ -18,8 +18,8 @@ class BoardRepository {
       final docs = result.docs;
       return docs.map((doc) {
         final map = doc.data();
-        doc.id;
-        final newMap = {'boardId': doc.id, ...map};
+        final newMap = {...map, 'boardId': doc.id};
+        // ...map이 되에 오면 map 안에 boardId 값이 덮어쓸 수 있기 때문에 순서 바꿔주기
         return Board.fromJson(newMap);
       }).toList();
     } catch (e) {
