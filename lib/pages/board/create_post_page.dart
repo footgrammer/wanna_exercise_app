@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+import 'package:wanna_exercise_app/pages/post/address_search_page.dart';
 
 class CreatePostPage extends StatefulWidget {
   const CreatePostPage({Key? key}) : super(key: key);
@@ -17,13 +16,13 @@ class _CreatePostPageState extends State<CreatePostPage> {
   final TextEditingController numberController = TextEditingController();
 
   String? selectedType;
-  DateTime? timeFrom;
-  DateTime? timeTo;
+  DateTime? selectedDate;
+  TimeOfDay? selectedTimeFrom;
+  TimeOfDay? selectedTimeTo;
 
   final List<String> sports = ['축구', '풋살', '농구', '러닝'];
 
-
-  Future<void> pickDateTime(bool isStart) async {
+  Future<void> pickDate() async {
     final now = DateTime.now();
     final date = await showDatePicker(
       context: context,
@@ -31,21 +30,37 @@ class _CreatePostPageState extends State<CreatePostPage> {
       firstDate: now,
       lastDate: DateTime(now.year + 2),
     );
-    if (date == null) return;
+
+    if (date != null) {
+      setState(() {
+        selectedDate = date;
+      });
+    }
+  }
+
+  Future<void> pickTime(bool isStart) async {
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    if (time == null) return;
 
-    final picked = DateTime(date.year, date.month, date.day, time.hour, time.minute);
-    setState(() {
-      if (isStart) {
-        timeFrom = picked;
-      } else {
-        timeTo = picked;
-      }
-    });
+    if (time != null) {
+      setState(() {
+        if (isStart) {
+          selectedTimeFrom = time;
+        } else {
+          selectedTimeTo = time;
+        }
+      });
+    }
+  }
+
+  String formatDate(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
+
+  String formatTime(TimeOfDay time) {
+    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -102,35 +117,63 @@ class _CreatePostPageState extends State<CreatePostPage> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () => pickDateTime(true),
+              onPressed: pickDate,
               child: Text(
-                timeFrom == null
-                    ? '시작 시간 : 시작시간 선택'
-                    : '시작 시간 : ${timeFrom.toString().split('.')[0]}',
+                selectedDate == null
+                    ? '날짜 선택'
+                    : '선택된 날짜: ${formatDate(selectedDate!)}',
               ),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () => pickDateTime(false),
+              onPressed: () => pickTime(true),
               child: Text(
-                timeTo == null
-                    ? '종료 시간 : 종료시간 선택'
-                    : '종료 시간 : ${timeTo.toString().split('.')[0]}',
+                selectedTimeFrom == null
+                    ? '시작 시간 선택'
+                    : '시작 시간: ${formatTime(selectedTimeFrom!)}',
               ),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () => pickTime(false),
+              child: Text(
+                selectedTimeTo == null
+                    ? '종료 시간 선택'
+                    : '종료 시간: ${formatTime(selectedTimeTo!)}',
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddressSearchPage()),
+                );
+
+                if (result != null) {
+                  setState(() {
+                    locationController.text = result['location'] ?? '';
+                    locationAddressController.text = result['locationAddress'] ?? '';
+                  });
+                }
+              },
+              child: const Text('주소 검색하기'),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: locationController,
+              readOnly: true,
               decoration: const InputDecoration(
-                labelText: '장소명',
+                labelText: '선택된 장소명',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: locationAddressController,
+              readOnly: true,
               decoration: const InputDecoration(
-                labelText: '상세 주소',
+                labelText: '선택된 상세 주소',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -154,8 +197,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
                       locationController.text.isEmpty ||
                       locationAddressController.text.isEmpty ||
                       numberController.text.isEmpty ||
-                      timeFrom == null ||
-                      timeTo == null) {
+                      selectedDate == null ||
+                      selectedTimeFrom == null ||
+                      selectedTimeTo == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('모든 항목을 입력하세요')),
                     );
@@ -163,14 +207,15 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   }
 
                   final result = {
-                    'type': selectedType,
+                    'type': selectedType!,
                     'title': titleController.text,
                     'content': contentController.text,
-                    'timeFrom': timeFrom.toString(),
-                    'timeTo': timeTo.toString(),
+                    'date': formatDate(selectedDate!),
+                    'timeFrom': formatTime(selectedTimeFrom!),
+                    'timeTo': formatTime(selectedTimeTo!),
                     'location': locationController.text,
                     'locationAddress': locationAddressController.text,
-                    'number': numberController.text,
+                    'number': int.parse(numberController.text),
                   };
 
                   Navigator.pop(context, result);
