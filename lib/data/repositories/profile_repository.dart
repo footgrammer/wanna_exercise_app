@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:wanna_exercise_app/core/email_to_phone.dart';
 import 'package:wanna_exercise_app/data/models/profile.dart';
 
 class ProfileRepository {
@@ -11,14 +12,16 @@ class ProfileRepository {
   final _storage = FirebaseStorage.instance;
 
   // 최초 로그인 시, 프로필 문서가 없으면 생성하는
-  Future<void> checkAndCreateUserProfile(String uid, {String? phone}) async {
+  Future<void> checkAndCreateUserProfile(String uid) async {
     final docRef = _firestore.collection('profile').doc(uid);
     final snapshot = await docRef.get();
+    final user = FirebaseAuth.instance.currentUser;
+    final phone = emailToPhone(user!.email!);
 
     if (!snapshot.exists) {
       await docRef.set({
         'nickname': '김운동',
-        'phone': phone ?? '010-0000-0000',
+        'phone': phone,
         'profileImage': '',
         'createdAt': FieldValue.serverTimestamp(),
       });
