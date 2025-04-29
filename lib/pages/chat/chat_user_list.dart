@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wanna_exercise_app/data/repositories/chat_repository.dart';
 import 'package:wanna_exercise_app/pages/chat/chat_room_page.dart';
-import 'package:wanna_exercise_app/data/repositories/profile_repository.dart'; // ProfileRepository 임포트
+import 'package:wanna_exercise_app/data/repositories/profile_repository.dart';
 
 class UserListScreen extends StatelessWidget {
   final String myUserId;
@@ -11,13 +11,13 @@ class UserListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _chatRepository = ChatRepository();
-    final profileRepository = ProfileRepository(); // ProfileRepository 인스턴스화
+    final profileRepository = ProfileRepository();
 
     return Scaffold(
       appBar: AppBar(title: Text('상대방 선택')),
       body: FutureBuilder<List<Map<String, String>>>(
-        future:
-            profileRepository.getUserUidsWithNicknames(), // UID와 닉네임 목록 가져오기
+        // 모든 사용자 UID + 닉네임 리스트 불러오기
+        future: profileRepository.getUserUidsWithNicknames(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -41,15 +41,15 @@ class UserListScreen extends StatelessWidget {
               final nickname = user['nickname']!;
 
               return ListTile(
-                title: Text(nickname), // 닉네임을 표시
-                onTap: () {
-                  // 상대방 UID를 선택하면 roomId 생성
+                title: Text(nickname),
+                onTap: () async {
+                  // 채팅방 ID 생성 및 Firestore에 방 생성
                   String roomId = _chatRepository.generateRoomId(
                     myUserId,
                     targetUid,
                   );
+                  await _chatRepository.createChatRoom(myUserId, targetUid);
 
-                  // 생성된 roomId로 채팅방 화면 열기
                   Navigator.push(
                     context,
                     MaterialPageRoute(

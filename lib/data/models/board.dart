@@ -1,4 +1,5 @@
 class Board {
+  final String boardId;
   final String type; // 운동 종류 [soccer, futsal, basketball, running)
   final String title; // 제목
   final String content; // 내용
@@ -10,6 +11,7 @@ class Board {
   final int number; //모집인원
 
   Board({
+    required this.boardId,
     required this.type,
     required this.title,
     required this.content,
@@ -23,6 +25,7 @@ class Board {
 
   factory Board.fromJson(Map<String, dynamic> json) {
     return Board(
+      boardId: json['boardId'] ?? '',
       type: json['type'],
       title: json['title'],
       content: json['content'],
@@ -36,7 +39,8 @@ class Board {
   }
 
   Map<String, dynamic> toJson() => {
-    'email': type,
+    'boardId': boardId,
+    'type': type,
     'title': title,
     'content': content,
     'date': date.toIso8601String(),
