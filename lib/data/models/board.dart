@@ -25,7 +25,7 @@ class Board {
 
   factory Board.fromJson(Map<String, dynamic> json) {
     return Board(
-      boardId: json['boardId'],
+      boardId: json['boardId'] ?? '',
       type: json['type'],
       title: json['title'],
       content: json['content'],
