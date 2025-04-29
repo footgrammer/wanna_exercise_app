@@ -4,7 +4,7 @@ import 'package:wanna_exercise_app/data/repositories/profile_repository.dart';
 
 class AuthRepository {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final ProfileRepository _profileRepository = ProfileRepository();
+  final ProfileRepository profileRepository = ProfileRepository();
 
   String formatPhoneAsEmail(String phone) {
     return '$phone@phone.login';
@@ -19,10 +19,9 @@ class AuthRepository {
       email: formattedPhone,
       password: password,
     );
-    await _profileRepository.checkAndCreateUserProfile(
+    await profileRepository.checkAndCreateUserProfile(
       //수정 : 로그인시 profile 문서가 없으면 생성
       credential.user!.uid,
-      phone: phone,
     );
     return credential;
   }
@@ -32,10 +31,15 @@ class AuthRepository {
     required String pasword,
   }) async {
     final formattedPhone = formatPhoneAsEmail(phone);
-    return auth.createUserWithEmailAndPassword(
+    final credential = await auth.createUserWithEmailAndPassword(
       email: formattedPhone,
       password: phone,
     );
+    await profileRepository.checkAndCreateUserProfile(
+      //수정 : 로그인시 profile 문서가 없으면 생성
+      credential.user!.uid,
+    );
+    return credential;
   }
 
   Future<bool> isPhoneAvailable(String phone) async {

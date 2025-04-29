@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wanna_exercise_app/firebase_options.dart';
-import 'package:wanna_exercise_app/pages/board/create_post_page.dart';
 import 'package:wanna_exercise_app/pages/splash/home_after_splash.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
