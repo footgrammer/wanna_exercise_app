@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wanna_exercise_app/data/view_models/home_content_view_model.dart';
+import 'package:wanna_exercise_app/pages/board/create_post_page.dart';
 import 'package:wanna_exercise_app/pages/home/widgets/build_activity_button.dart';
+import 'package:wanna_exercise_app/pages/board/create_post_page.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class HomeContentPage extends StatefulWidget {
@@ -24,6 +26,15 @@ class _HomeContentPageState extends State<HomeContentPage> {
     });
   }
 
+  void _navigateToCreatePost(String selectedSport) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreatePostPage(initialType: selectedSport),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +51,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 Text(
                   currentAddress,
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
@@ -70,24 +82,28 @@ class _HomeContentPageState extends State<HomeContentPage> {
                     textColor: Colors.blue,
                     bgColor: Colors.white,
                     icon: Icons.sports_soccer,
+                    onTap: () => _navigateToCreatePost('축구'),
                   ),
                   BuildActivityButton(
                     label: '풋살',
                     textColor: Colors.white,
                     bgColor: Colors.blue,
                     icon: Icons.sports_soccer,
+                    onTap: () => _navigateToCreatePost('풋살'),
                   ),
                   BuildActivityButton(
                     label: '러닝',
                     textColor: Colors.white,
                     bgColor: Colors.orange,
                     icon: Icons.directions_run,
+                    onTap: () => _navigateToCreatePost('러닝'),
                   ),
                   BuildActivityButton(
                     label: '농구',
                     textColor: Colors.white,
                     bgColor: Colors.teal,
                     icon: Icons.sports_basketball,
+                    onTap: () => _navigateToCreatePost('농구'),
                   ),
                 ],
               ),
