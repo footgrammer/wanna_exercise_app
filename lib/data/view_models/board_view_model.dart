@@ -29,10 +29,12 @@ class BoardViewModel extends Notifier<BoardState> {
   void getBoards() async {
     BoardRepository boardRepository = BoardRepository();
     List<Board>? boards = await boardRepository.getBoardsData();
+    // copyWith을 써서 filterType은 그대로 두고 boards만 업데이트
     state = state.copyWith(boards: boards);
   }
 
   void setFilter(String? type) {
+    // filterType만 바뀌면 자동으로 filteredBoards가 바뀜
     state = state.copyWith(filterType: type);
   }
 }

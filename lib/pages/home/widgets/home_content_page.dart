@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wanna_exercise_app/data/view_models/home_content_view_model.dart';
-import 'package:wanna_exercise_app/pages/board/create_post_page.dart';
+import 'package:wanna_exercise_app/pages/board/create_board_page.dart';
 import 'package:wanna_exercise_app/pages/home/widgets/build_activity_button.dart';
-import 'package:wanna_exercise_app/pages/board/create_post_page.dart';
+import 'package:wanna_exercise_app/pages/board/create_board_page.dart';
 import 'package:wanna_exercise_app/themes/light_theme.dart';
 
 class HomeContentPage extends StatefulWidget {
@@ -32,7 +32,7 @@ void initState() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CreatePostPage(initialType: selectedSport),
+        builder: (context) => CreateBoardPage(initialType: selectedSport),
       ),
     );
   }
@@ -52,7 +52,10 @@ void initState() {
                 const SizedBox(height: 4),
                 Text(
                   currentAddress,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -81,31 +84,31 @@ void initState() {
                 children: [
                   BuildActivityButton(
                     label: '축구',
-                    textColor: Colors.blue,
-                    bgColor: Colors.white,
+                    textColor: Colors.white,
+                    bgColor: primaryColor,
                     icon: Icons.sports_soccer,
-                    onTap: () => _navigateToCreatePost('축구'),
+                    onTap: () => _navigateToCreatePost('soccer'),
                   ),
                   BuildActivityButton(
                     label: '풋살',
                     textColor: Colors.white,
-                    bgColor: Colors.blue,
+                    bgColor: accentColor3,
                     icon: Icons.sports_soccer,
-                    onTap: () => _navigateToCreatePost('풋살'),
+                    onTap: () => _navigateToCreatePost('futsal'),
                   ),
                   BuildActivityButton(
                     label: '러닝',
                     textColor: Colors.white,
-                    bgColor: Colors.orange,
+                    bgColor: accentColor1,
                     icon: Icons.directions_run,
-                    onTap: () => _navigateToCreatePost('러닝'),
+                    onTap: () => _navigateToCreatePost('running'),
                   ),
                   BuildActivityButton(
                     label: '농구',
                     textColor: Colors.white,
-                    bgColor: Colors.teal,
+                    bgColor: accentColor2,
                     icon: Icons.sports_basketball,
-                    onTap: () => _navigateToCreatePost('농구'),
+                    onTap: () => _navigateToCreatePost('basketball'),
                   ),
                 ],
               ),
