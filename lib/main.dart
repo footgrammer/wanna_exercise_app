@@ -12,7 +12,7 @@ import 'package:wanna_exercise_app/themes/light_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterNaverMap().init(
-    clientId: "ddmiypldvb",
+    clientId: "내ID",//naver_map
     onAuthFailed: (ex) {
       print(ex);
     },
