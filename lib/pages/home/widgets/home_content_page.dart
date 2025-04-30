@@ -16,15 +16,17 @@ class _HomeContentPageState extends State<HomeContentPage> {
   final HomeContentViewModel viewModel = HomeContentViewModel();
   String currentAddress = '위치 가져오는 중...';
 
-  @override
-  void initState() {
-    super.initState();
-    viewModel.getCurrentLocation((updatedAddress) {
-      setState(() {
-        currentAddress = updatedAddress;
-      });
+ @override
+void initState() {
+  super.initState();
+  viewModel.getCurrentLocation((updatedAddress) {
+    if (!mounted) return;
+    setState(() {
+      currentAddress = updatedAddress;
     });
-  }
+  });
+}
+
 
   void _navigateToCreatePost(String selectedSport) {
     Navigator.push(

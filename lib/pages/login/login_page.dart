@@ -179,6 +179,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final credential = await ref
         .read(authViewModelProvider)
         .login(phone: phoneController.text, password: pwController.text);
+    if (!mounted) return;
 
     if (credential != null && credential.user != null) {
       Navigator.pushAndRemoveUntil(
