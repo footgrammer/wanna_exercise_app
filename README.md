@@ -11,9 +11,10 @@
   <img src="https://github.com/user-attachments/assets/f85ca9fc-64b8-44a3-b38f-364c6260e0d3" width="120" style="margin: 10px; flex-shrink: 0;"> <!--메인-->
   <img src="https://github.com/user-attachments/assets/974cf254-427c-49ea-8db1-553ca9447361" width="120" style="margin: 10px; flex-shrink: 0;"> <!--보드게시판-->
   <img src="https://github.com/user-attachments/assets/d3817a16-5245-49e2-bad9-9588e671d2d2" width="120" style="margin: 10px; flex-shrink: 0;"> <!--보드게시판 디테일-->
-  <img src="https://github.com/user-attachments/assets/be80dae1-b62c-4141-87d4-d3322b13cc00" width="120" style="margin: 10px; flex-shrink: 0;"> <!--게시판 작성페이지-->
   <img src="https://github.com/user-attachments/assets/3f738827-1cf0-4f6d-9356-479cdd02236e" width="120" style="margin: 10px; flex-shrink: 0;"> <!--지도-->
+  <img src="https://github.com/user-attachments/assets/2fbf3cac-d9a4-4b0f-b386-a9736b44cdc0" width="120" style="margin: 10px; flex-shrink: 0;"> <!--지도디테일-->
   <img src="https://github.com/user-attachments/assets/13b94bf1-1027-4e26-a6ff-055231aa69c1" width="120" style="margin: 10px; flex-shrink: 0;"> <!--채팅 목록-->
+  <img src="https://github.com/user-attachments/assets/29fecd50-0cab-43f9-9aa9-44600ed7b5f1" width="120" style="margin: 10px; flex-shrink: 0;"> <!--채팅 룸-->
   <img src="https://github.com/user-attachments/assets/8d9de90f-14e6-42e7-88f5-0e9e611907b6" width="120" style="margin: 10px; flex-shrink: 0;"> <!--프로필 이미지-->
   <img src="https://github.com/user-attachments/assets/79bb9b04-1f2a-47a3-ad06-b8d8b0393bd2" width="120" style="margin: 10px; flex-shrink: 0;"> <!--프로필 수정-->
 </div>
@@ -98,6 +99,10 @@
 ---
 
 ## 와이어프레임
+<p align="center">
+ <a href="https://www.figma.com/design/0O1di7f2n6HLuHAqNJTTEW/5%EC%A1%B0?node-id=0-1&p=f&t=B79lhlu3cqDC0VJx-0">
+<img width="802" alt="image" src="https://github.com/user-attachments/assets/0a365ed6-85ca-489f-a938-794bce1ee1e9">
+</p>
 
 ---
 
