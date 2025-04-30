@@ -4,7 +4,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 
 class KakaoLocationHelper {
   // Kakao REST API Key
-  static const _kakaoApiKey = 'KakaoAK 791070265eff4f73e8343ac2f4dc34dc'; 
+  static const _kakaoApiKey = 'KakaoAK [내KEY]'; 
 
   // 주소(문자열)를 받아서 좌표(NLatLng)로 변환하는 함수
   static Future<NLatLng?> getCoordsFromAddress(String address) async {
